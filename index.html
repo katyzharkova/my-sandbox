@@ -8,18 +8,25 @@
 </head>
 <body>
   <main class="container">
-    <h1>JavaScript Sandbox</h1>
+    <div class="sandbox">
+      <div class="top-line"></div>
 
-    <div class="workspace">
-      <section class="panel">
-        <h2>Script</h2>
-        <textarea id="code">console.log("Hello, world!");</textarea>
-      </section>
+      <div class="sandbox-header">
+        <div class="header-title">Script</div>
+        <div class="header-title">Console</div>
+      </div>
 
-      <section class="panel">
-        <h2>Console</h2>
-        <div id="output">Output will appear here...</div>
-      </section>
+      <div class="workspace">
+        <div class="pane pane-left">
+          <textarea id="code">console.log("Hello, world!");</textarea>
+        </div>
+
+        <div class="pane pane-right">
+          <div id="output">Output will appear here...</div>
+        </div>
+      </div>
+
+      <div class="bottom-line"></div>
     </div>
   </main>
 
