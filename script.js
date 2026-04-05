@@ -44,5 +44,26 @@ codeInput.addEventListener("input", function () {
   clearTimeout(timer);
   timer = setTimeout(runCode, 400);
 });
+const lineNumbers = document.getElementById("lineNumbers");
+
+function updateLineNumbers() {
+  const lines = editor.value.split("\n").length;
+  lineNumbers.innerHTML = "";
+
+  for (let i = 1; i <= lines; i++) {
+    const line = document.createElement("div");
+    line.textContent = i;
+    line.style.background = i % 2 === 0 ? "#f3f3f3" : "#e7e7e7";
+    lineNumbers.appendChild(line);
+  }
+}
+
+editor.addEventListener("input", updateLineNumbers);
+
+editor.addEventListener("scroll", () => {
+  lineNumbers.scrollTop = editor.scrollTop;
+});
+
+updateLineNumbers();
 
 runCode();
