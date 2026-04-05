@@ -1,36 +1,542 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JavaScript Sandbox</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My JavaScript Playground</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      background:
+        linear-gradient(rgba(10,10,20,0.72), rgba(10,10,20,0.82)),
+        url("https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80")
+        center/cover no-repeat fixed;
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1280px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      font-size: 30px;
+      margin: 0;
+      color: #d4af37;
+      text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+    }
+
+    .language-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 10px 14px;
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+    }
+
+    select, input, button {
+      font: inherit;
+    }
+
+    select, input[type="text"] {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      outline: none;
+    }
+
+    select option {
+      color: black;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-btn {
+      background: #d4af37;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .secondary-btn {
+      background: #2c2f38;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .card {
+      background: rgba(20, 24, 34, 0.72);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    }
+
+    .welcome-screen,
+    .playground-screen {
+      display: none;
+    }
+
+    .welcome-screen.active,
+    .playground-screen.active {
+      display: block;
+    }
+
+    .welcome-box {
+      max-width: 700px;
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    .welcome-box h2 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .welcome-box p {
+      color: #d8d8d8;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .welcome-form {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .welcome-form input {
+      min-width: 280px;
+    }
+
+    .greeting {
+      font-size: 28px;
+      color: #d4af37;
+      margin: 0 0 18px 0;
+    }
+
+    .workspace {
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(10,12,18,0.7);
+    }
+
+    .workspace-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .workspace-header-title {
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .workspace-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .panes {
+      display: flex;
+      width: 100%;
+      height: 480px;
+      min-height: 420px;
+    }
+
+    .pane {
+      display: flex;
+      flex-direction: column;
+      min-width: 120px;
+      overflow: hidden;
+    }
+
+    .pane-label {
+      padding: 12px 14px;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .editor-pane {
+      width: 55%;
+      background: #f7f7f7;
+      color: #111;
+    }
+
+    .editor-pane .pane-label {
+      background: #ececec;
+      color: #222;
+    }
+
+    .console-pane {
+      flex: 1;
+      background: #111318;
+      color: #eaeaea;
+    }
+
+    .console-pane .pane-label {
+      background: #1a1d24;
+      color: #d4af37;
+    }
+
+    #editor {
+      flex: 1;
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      padding: 16px;
+      font-size: 16px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      background: transparent;
+      color: #111;
+      line-height: 1.6;
+    }
+
+    #console {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      width: 8px;
+      cursor: col-resize;
+      background: linear-gradient(to bottom, #d4af37, #7a6220);
+      flex-shrink: 0;
+    }
+
+    .divider:hover {
+      opacity: 0.9;
+    }
+
+    .helper-text {
+      margin-top: 14px;
+      color: #cfcfcf;
+      line-height: 1.6;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      color: #b8b8b8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .panes {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .editor-pane {
+        width: 100% !important;
+      }
+
+      .divider {
+        width: 100%;
+        height: 8px;
+        cursor: row-resize;
+      }
+
+      #editor {
+        min-height: 220px;
+      }
+
+      #console {
+        min-height: 220px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <main class="container">
-    <h1 class="main-title">My JavaScript Playground</h1>
-    <div class="sandbox">
-      <div class="top-line"></div>
+  <div class="app">
+    <div class="topbar">
+      <h1 class="title">My JavaScript Playground</h1>
 
-      <div class="sandbox-header">
-        <div class="header-title">Script</div>
-        <div class="header-title">Console</div>
+      <div class="language-box">
+        <label for="languageSelect">Language</label>
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="ru">Русский</option>
+          <option value="uk">Українська</option>
+        </select>
       </div>
-
-      <div class="workspace">
-        <div class="pane pane-left">
-          <textarea id="code">console.log("Hello, world!");</textarea>
-        </div>
-
-        <div class="pane pane-right">
-          <div id="output">Output will appear here...</div>
-        </div>
-      </div>
-
-      <div class="bottom-line"></div>
     </div>
-  </main>
 
-  <script src="script.js"></script>
+    <section id="welcomeScreen" class="welcome-screen active">
+      <div class="card welcome-box">
+        <h2 id="welcomeTitle">Enter your name</h2>
+        <p id="welcomeText">Type your name below and press Next.</p>
+
+        <div class="welcome-form">
+          <input type="text" id="nameInput" placeholder="Your name" />
+          <button class="primary-btn" id="nextBtn">Next</button>
+        </div>
+
+        <div class="small-note">
+          After that, the app will greet you in the selected language.
+        </div>
+      </div>
+    </section>
+
+    <section id="playgroundScreen" class="playground-screen">
+      <div class="card">
+        <h2 class="greeting" id="greetingText">Hello, Friend</h2>
+
+        <div class="workspace">
+          <div class="workspace-header">
+            <div class="workspace-header-title">Script + Console</div>
+
+            <div class="workspace-actions">
+              <button class="secondary-btn" id="clearBtn">Clear</button>
+              <button class="primary-btn" id="backBtn">Back</button>
+            </div>
+          </div>
+
+          <div class="panes" id="panes">
+            <div class="pane editor-pane" id="editorPane">
+              <div class="pane-label">Script</div>
+              <textarea id="editor">const name = "Anna";
+console.log("Hello, " + name);</textarea>
+            </div>
+
+            <div class="divider" id="divider"></div>
+
+            <div class="pane console-pane">
+              <div class="pane-label">Console</div>
+              <div id="console"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="helper-text">
+          Code runs automatically a moment after you stop typing. If there is an error, it will appear in the console.
+        </div>
+
+        <div class="small-note">
+          Later, for real color syntax highlighting like in professional editors, you can replace the simple textarea with CodeMirror or Monaco.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const languageSelect = document.getElementById("languageSelect");
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const playgroundScreen = document.getElementById("playgroundScreen");
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const nameInput = document.getElementById("nameInput");
+    const greetingText = document.getElementById("greetingText");
+    const editor = document.getElementById("editor");
+    const consoleBox = document.getElementById("console");
+    const divider = document.getElementById("divider");
+    const editorPane = document.getElementById("editorPane");
+    const panes = document.getElementById("panes");
+
+    const welcomeTitle = document.getElementById("welcomeTitle");
+    const welcomeText = document.getElementById("welcomeText");
+
+    const translations = {
+      en: {
+        enterName: "Enter your name",
+        typeName: "Type your name below and press Next.",
+        placeholder: "Your name",
+        next: "Next",
+        back: "Back",
+        clear: "Clear",
+        hello: "Hello",
+        defaultName: "Friend"
+      },
+      es: {
+        enterName: "Enter your name",
+        typeName: "Type your name below and press Next.",
+        placeholder: "Your name",
+        next: "Next",
+        back: "Back",
+        clear: "Clear",
+        hello: "Hola",
+        defaultName: "Amigo"
+      },
+      fr: {
+        enterName: "Enter your name",
+        typeName: "Type your name below and press Next.",
+        placeholder: "Your name",
+        next: "Next",
+        back: "Back",
+        clear: "Clear",
+        hello: "Bonjour",
+        defaultName: "Ami"
+      },
+      ru: {
+        enterName: "Введите ваше имя",
+        typeName: "Введите имя ниже и нажмите Next.",
+        placeholder: "Ваше имя",
+        next: "Next",
+        back: "Back",
+        clear: "Clear",
+        hello: "Привет",
+        defaultName: "друг"
+      },
+      uk: {
+        enterName: "Введіть ваше ім’я",
+        typeName: "Введіть ім’я нижче і натисніть Next.",
+        placeholder: "Ваше ім’я",
+        next: "Next",
+        back: "Back",
+        clear: "Clear",
+        hello: "Привіт",
+        defaultName: "друже"
+      }
+    };
+
+    function updateLanguageUI() {
+      const lang = languageSelect.value;
+      const t = translations[lang];
+
+      welcomeTitle.textContent = t.enterName;
+      welcomeText.textContent = t.typeName;
+      nameInput.placeholder = t.placeholder;
+      nextBtn.textContent = t.next;
+      backBtn.textContent = t.back;
+      clearBtn.textContent = t.clear;
+
+      updateGreeting();
+    }
+
+    function updateGreeting() {
+      const lang = languageSelect.value;
+      const t = translations[lang];
+      const name = nameInput.value.trim() || t.defaultName;
+      greetingText.textContent = `${t.hello}, ${name}`;
+    }
+
+    nextBtn.addEventListener("click", () => {
+      welcomeScreen.classList.remove("active");
+      playgroundScreen.classList.add("active");
+      updateGreeting();
+      runCode();
+    });
+
+    backBtn.addEventListener("click", () => {
+      playgroundScreen.classList.remove("active");
+      welcomeScreen.classList.add("active");
+    });
+
+    languageSelect.addEventListener("change", updateLanguageUI);
+    nameInput.addEventListener("input", updateGreeting);
+
+    clearBtn.addEventListener("click", () => {
+      editor.value = "";
+      consoleBox.textContent = "";
+    });
+
+    function runCode() {
+      const code = editor.value;
+      const output = [];
+
+      const fakeConsole = {
+        log: (...args) => {
+          output.push(args.join(" "));
+        }
+      };
+
+      try {
+        const wrappedCode = new Function("console", code);
+        wrappedCode(fakeConsole);
+
+        consoleBox.textContent = output.length
+          ? output.join("\n")
+          : "No output";
+      } catch (error) {
+        consoleBox.textContent = "Error: " + error.message;
+      }
+    }
+
+    let typingTimer;
+    editor.addEventListener("input", () => {
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(runCode, 400);
+    });
+
+    let isDragging = false;
+
+    divider.addEventListener("mousedown", () => {
+      isDragging = true;
+      document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      document.body.style.userSelect = "";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging || window.innerWidth <= 900) return;
+
+      const panesRect = panes.getBoundingClientRect();
+      let newLeftWidth = e.clientX - panesRect.left;
+
+      const minWidth = 140;
+      const maxWidth = panesRect.width - 140;
+
+      if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+      if (newLeftWidth > maxWidth) newLeftWidth = maxWidth;
+
+      editorPane.style.width = newLeftWidth + "px";
+    });
+
+    updateLanguageUI();
+  </script>
 </body>
 </html>
