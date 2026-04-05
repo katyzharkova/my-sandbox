@@ -222,6 +222,43 @@
       color: #d4af37;
     }
 
+    .editor-wrapper {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      background: #f7f7f7;
+    }
+
+    .line-numbers {
+      width: 60px;
+      background: #efefef;
+      border-right: 1px solid #dddddd;
+      color: #8a8a8a;
+      text-align: right;
+      overflow: hidden;
+      flex-shrink: 0;
+      padding-top: 16px;
+      padding-bottom: 16px;
+    }
+
+    .line-numbers-content {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .line-numbers-content div {
+      height: 25.6px;
+      padding-right: 12px;
+    }
+
+    .line-numbers-content div:nth-child(odd) {
+      background: #ebebeb;
+    }
+
+    .line-numbers-content div:nth-child(even) {
+      background: #f4f4f4;
+    }
+
     #editor {
       flex: 1;
       width: 100%;
@@ -231,9 +268,10 @@
       padding: 16px;
       font-size: 16px;
       font-family: Consolas, Monaco, "Courier New", monospace;
-      background: transparent;
+      background: #f7f7f7;
       color: #111;
       line-height: 1.6;
+      overflow: auto;
     }
 
     #console {
@@ -341,15 +379,20 @@
               <button class="primary-btn" id="backBtn">Back</button>
             </div>
           </div>
-<div class="pane editor-pane" id="editorPane">
-  <div class="pane-label">Script</div>
 
-  <div class="editor-wrapper">
-    <div id="lineNumbers"></div>
-    <textarea id="editor">const name = "Anna";
+          <div class="panes" id="panes">
+            <div class="pane editor-pane" id="editorPane">
+              <div class="pane-label">Script</div>
+
+              <div class="editor-wrapper">
+                <div class="line-numbers" id="lineNumbers">
+                  <div class="line-numbers-content" id="lineNumbersContent"></div>
+                </div>
+
+                <textarea id="editor">const name = "Anna";
 console.log("Hello, " + name);</textarea>
-  </div>
-</div>
+              </div>
+            </div>
 
             <div class="divider" id="divider"></div>
 
@@ -385,6 +428,8 @@ console.log("Hello, " + name);</textarea>
     const divider = document.getElementById("divider");
     const editorPane = document.getElementById("editorPane");
     const panes = document.getElementById("panes");
+    const lineNumbers = document.getElementById("lineNumbers");
+    const lineNumbersContent = document.getElementById("lineNumbersContent");
 
     const welcomeTitle = document.getElementById("welcomeTitle");
     const welcomeText = document.getElementById("welcomeText");
@@ -467,6 +512,7 @@ console.log("Hello, " + name);</textarea>
       welcomeScreen.classList.remove("active");
       playgroundScreen.classList.add("active");
       updateGreeting();
+      updateLineNumbers();
       runCode();
     });
 
@@ -481,7 +527,19 @@ console.log("Hello, " + name);</textarea>
     clearBtn.addEventListener("click", () => {
       editor.value = "";
       consoleBox.textContent = "";
+      updateLineNumbers();
     });
+
+    function updateLineNumbers() {
+      const lines = Math.max(editor.value.split("\n").length, 1);
+      lineNumbersContent.innerHTML = "";
+
+      for (let i = 1; i <= lines; i++) {
+        const line = document.createElement("div");
+        line.textContent = i;
+        lineNumbersContent.appendChild(line);
+      }
+    }
 
     function runCode() {
       const code = editor.value;
@@ -507,8 +565,13 @@ console.log("Hello, " + name);</textarea>
 
     let typingTimer;
     editor.addEventListener("input", () => {
+      updateLineNumbers();
       clearTimeout(typingTimer);
       typingTimer = setTimeout(runCode, 400);
+    });
+
+    editor.addEventListener("scroll", () => {
+      lineNumbers.scrollTop = editor.scrollTop;
     });
 
     let isDragging = false;
@@ -529,8 +592,8 @@ console.log("Hello, " + name);</textarea>
       const panesRect = panes.getBoundingClientRect();
       let newLeftWidth = e.clientX - panesRect.left;
 
-      const minWidth = 140;
-      const maxWidth = panesRect.width - 140;
+      const minWidth = 180;
+      const maxWidth = panesRect.width - 180;
 
       if (newLeftWidth < minWidth) newLeftWidth = minWidth;
       if (newLeftWidth > maxWidth) newLeftWidth = maxWidth;
@@ -539,6 +602,8 @@ console.log("Hello, " + name);</textarea>
     });
 
     updateLanguageUI();
+    updateLineNumbers();
+    runCode();
   </script>
 </body>
 </html>
