@@ -95,3 +95,36 @@ textarea {
     min-height: 220px;
   }
 }
+.editor-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+#lineNumbers {
+  width: 50px;
+  background: #ececec;
+  color: #777;
+  padding: 16px 6px;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: right;
+  user-select: none;
+  overflow: hidden;
+}
+
+#lineNumbers div {
+  height: 25.6px;
+}
+
+#editor {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 16px;
+  font-size: 16px;
+  line-height: 1.6;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  background: transparent;
+  color: #111;
+}
