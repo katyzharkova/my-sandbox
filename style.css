@@ -1,29 +1,32 @@
-.main-title {
-  font-size: 32px;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: black;
+* {
+  box-sizing: border-box;
 }
+
 body {
-  font-family: monospace;
-  background: #f4f4f4;
-  color: #d4af37;
   margin: 0;
   padding: 0;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  background: #f4f4f4;
+  color: #111;
 }
 
 .container {
   max-width: 1250px;
   margin: 40px auto;
   padding: 20px;
-  color: #d4af37;
+}
+
+.main-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: black;
 }
 
 .sandbox {
   background: #eaeaea;
   border-radius: 16px;
   overflow: hidden;
-  box-sizing: border-box;
 }
 
 .top-line,
@@ -39,6 +42,7 @@ body {
   padding: 20px 20px 10px 20px;
   font-size: 18px;
   font-weight: bold;
+  color: #222;
 }
 
 .workspace {
@@ -53,18 +57,55 @@ body {
   min-width: 0;
 }
 
-textarea {
-  width: 100%;
+.editor-wrapper {
+  display: flex;
   min-height: 320px;
-  padding: 18px;
-  font-family: monospace;
-  font-size: 16px;
-  border: none;
-  outline: none;
-  resize: both;
-  box-sizing: border-box;
   background: #f7f7f7;
   border-radius: 12px;
+  overflow: hidden;
+}
+
+#lineNumbers {
+  width: 52px;
+  background: #ececec;
+  color: #777;
+  padding: 16px 6px;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: right;
+  user-select: none;
+  overflow: hidden;
+  border-right: 1px solid #dddddd;
+  flex-shrink: 0;
+}
+
+#lineNumbers div {
+  height: 25.6px;
+  padding-right: 8px;
+}
+
+#lineNumbers div:nth-child(odd) {
+  background: #e9e9e9;
+}
+
+#lineNumbers div:nth-child(even) {
+  background: #f3f3f3;
+}
+
+#editor {
+  flex: 1;
+  width: 100%;
+  min-height: 320px;
+  padding: 16px;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  border: none;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  color: #111;
 }
 
 #output {
@@ -72,7 +113,7 @@ textarea {
   padding: 18px;
   background: black;
   color: lime;
-  font-family: monospace;
+  font-family: Consolas, Monaco, "Courier New", monospace;
   font-size: 16px;
   white-space: pre-wrap;
   box-sizing: border-box;
@@ -90,41 +131,9 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  textarea,
+  .editor-wrapper,
+  #editor,
   #output {
     min-height: 220px;
   }
-}
-.editor-wrapper {
-  display: flex;
-  height: 100%;
-}
-
-#lineNumbers {
-  width: 50px;
-  background: #ececec;
-  color: #777;
-  padding: 16px 6px;
-  font-size: 16px;
-  line-height: 1.6;
-  text-align: right;
-  user-select: none;
-  overflow: hidden;
-}
-
-#lineNumbers div {
-  height: 25.6px;
-}
-
-#editor {
-  flex: 1;
-  border: none;
-  outline: none;
-  resize: none;
-  padding: 16px;
-  font-size: 16px;
-  line-height: 1.6;
-  font-family: Consolas, Monaco, "Courier New", monospace;
-  background: transparent;
-  color: #111;
 }
