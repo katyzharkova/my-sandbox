@@ -1,609 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My JavaScript Playground</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Consolas, Monaco, "Courier New", monospace;
-      background:
-        linear-gradient(rgba(10,10,20,0.72), rgba(10,10,20,0.82)),
-        url("https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1600&q=80")
-        center/cover no-repeat fixed;
-      color: #f5f5f5;
-      min-height: 100vh;
-    }
-
-    .app {
-      max-width: 1280px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .title {
-      font-size: 30px;
-      margin: 0;
-      color: #d4af37;
-      text-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
-    }
-
-    .language-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      padding: 10px 14px;
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
-    }
-
-    select, input, button {
-      font: inherit;
-    }
-
-    select, input[type="text"] {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.15);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      outline: none;
-    }
-
-    select option {
-      color: black;
-    }
-
-    button {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    .primary-btn {
-      background: #d4af37;
-      color: #111;
-      font-weight: bold;
-    }
-
-    .secondary-btn {
-      background: #2c2f38;
-      color: white;
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .card {
-      background: rgba(20, 24, 34, 0.72);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 18px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
-    }
-
-    .welcome-screen,
-    .playground-screen {
-      display: none;
-    }
-
-    .welcome-screen.active,
-    .playground-screen.active {
-      display: block;
-    }
-
-    .welcome-box {
-      max-width: 700px;
-      margin: 60px auto;
-      text-align: center;
-    }
-
-    .welcome-box h2 {
-      font-size: 28px;
-      margin-bottom: 16px;
-      color: #fff;
-    }
-
-    .welcome-box p {
-      color: #d8d8d8;
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    .welcome-form {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .welcome-form input {
-      min-width: 280px;
-    }
-
-    .greeting {
-      font-size: 28px;
-      color: #d4af37;
-      margin: 0 0 18px 0;
-    }
-
-    .workspace {
-      overflow: hidden;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(10,12,18,0.7);
-    }
-
-    .workspace-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px;
-      background: rgba(255,255,255,0.05);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .workspace-header-title {
-      font-size: 18px;
-      color: #fff;
-    }
-
-    .workspace-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .panes {
-      display: flex;
-      width: 100%;
-      height: 480px;
-      min-height: 420px;
-    }
-
-    .pane {
-      display: flex;
-      flex-direction: column;
-      min-width: 120px;
-      overflow: hidden;
-    }
-
-    .pane-label {
-      padding: 12px 14px;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .editor-pane {
-      width: 55%;
-      background: #f7f7f7;
-      color: #111;
-    }
-
-    .editor-pane .pane-label {
-      background: #ececec;
-      color: #222;
-    }
-
-    .console-pane {
-      flex: 1;
-      background: #111318;
-      color: #eaeaea;
-    }
-
-    .console-pane .pane-label {
-      background: #1a1d24;
-      color: #d4af37;
-    }
-
-    .editor-wrapper {
-      display: flex;
-      flex: 1;
-      min-height: 0;
-      background: #f7f7f7;
-    }
-
-    .line-numbers {
-      width: 60px;
-      background: #efefef;
-      border-right: 1px solid #dddddd;
-      color: #8a8a8a;
-      text-align: right;
-      overflow: hidden;
-      flex-shrink: 0;
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
-    .line-numbers-content {
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    .line-numbers-content div {
-      height: 25.6px;
-      padding-right: 12px;
-    }
-
-    .line-numbers-content div:nth-child(odd) {
-      background: #ebebeb;
-    }
-
-    .line-numbers-content div:nth-child(even) {
-      background: #f4f4f4;
-    }
-
-    #editor {
-      flex: 1;
-      width: 100%;
-      border: none;
-      outline: none;
-      resize: none;
-      padding: 16px;
-      font-size: 16px;
-      font-family: Consolas, Monaco, "Courier New", monospace;
-      background: #f7f7f7;
-      color: #111;
-      line-height: 1.6;
-      overflow: auto;
-    }
-
-    #console {
-      flex: 1;
-      padding: 16px;
-      overflow: auto;
-      white-space: pre-wrap;
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    .divider {
-      width: 8px;
-      cursor: col-resize;
-      background: linear-gradient(to bottom, #d4af37, #7a6220);
-      flex-shrink: 0;
-    }
-
-    .divider:hover {
-      opacity: 0.9;
-    }
-
-    .helper-text {
-      margin-top: 14px;
-      color: #cfcfcf;
-      line-height: 1.6;
-    }
-
-    .small-note {
-      margin-top: 10px;
-      color: #b8b8b8;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    @media (max-width: 900px) {
-      .panes {
-        flex-direction: column;
-        height: auto;
-      }
-
-      .editor-pane {
-        width: 100% !important;
-      }
-
-      .divider {
-        width: 100%;
-        height: 8px;
-        cursor: row-resize;
-      }
-
-      #editor {
-        min-height: 220px;
-      }
-
-      #console {
-        min-height: 220px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <div class="topbar">
-      <h1 class="title">My JavaScript Playground</h1>
-
-      <div class="language-box">
-        <label for="languageSelect">Language</label>
-        <select id="languageSelect">
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-          <option value="ru">Русский</option>
-          <option value="uk">Українська</option>
-        </select>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Learning Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="binary-bg" aria-hidden="true">
+        <span>01001010 01000001 01010110 01000001</span>
+        <span>01010011 01000011 01010010 01001001</span>
+        <span>01010000 01001100 01000001 01011001</span>
+        <span>01000011 01001111 01000100 01000101</span>
       </div>
-    </div>
 
-    <section id="welcomeScreen" class="welcome-screen active">
-      <div class="card welcome-box">
-        <h2 id="welcomeTitle">Enter your name</h2>
-        <p id="welcomeText">Type your name below and press Next.</p>
-
-        <div class="welcome-form">
-          <input type="text" id="nameInput" placeholder="Your name" />
-          <button class="primary-btn" id="nextBtn">Next</button>
+      <header class="topbar">
+        <div class="topbar-brand" aria-label="JavaScript Learning Studio">
+          <div class="topbar-brand-mark" aria-hidden="true">
+            <span class="topbar-brand-core">
+              <span class="topbar-brand-brace topbar-brand-brace-left">{</span>
+              <span class="topbar-brand-text">JS</span>
+              <span class="topbar-brand-brace topbar-brand-brace-right">}</span>
+            </span>
+          </div>
         </div>
 
-        <div class="small-note">
-          After that, the app will greet you in the selected language.
-        </div>
-      </div>
-    </section>
+        <nav class="topbar-menu" aria-label="Main">
+          <button class="menu-btn is-active" data-view-target="home-view" data-i18n="menu_home">Home</button>
+          <button class="menu-btn" data-view-target="console-view" data-i18n="menu_console">Console</button>
+          <button class="menu-btn" data-view-target="builder-view" data-i18n="menu_builder">HTML / CSS</button>
+          <button class="menu-btn" data-view-target="training-view" data-i18n="menu_training">Training</button>
+        </nav>
 
-    <section id="playgroundScreen" class="playground-screen">
-      <div class="card">
-        <h2 class="greeting" id="greetingText">Hello, Friend</h2>
-
-        <div class="workspace">
-          <div class="workspace-header">
-            <div class="workspace-header-title">Script + Console</div>
-
-            <div class="workspace-actions">
-              <button class="secondary-btn" id="clearBtn">Clear</button>
-              <button class="primary-btn" id="backBtn">Back</button>
+        <div class="topbar-controls">
+          <div class="dropdown">
+            <button
+              class="icon-btn"
+              id="theme-toggle"
+              aria-expanded="false"
+              aria-haspopup="true"
+              data-i18n="style_button"
+            >
+              Style
+            </button>
+            <div class="dropdown-menu theme-menu" id="theme-menu">
+              <button class="dropdown-item is-active" data-theme-value="blue" data-i18n="theme_blue">Blue</button>
+              <button class="dropdown-item" data-theme-value="violet" data-i18n="theme_violet">Violet</button>
+              <button class="dropdown-item" data-theme-value="green" data-i18n="theme_green">Green</button>
+              <button class="dropdown-item" data-theme-value="gold" data-i18n="theme_gold">Gold</button>
+              <button class="dropdown-item" data-theme-value="white" data-i18n="theme_white">White</button>
             </div>
           </div>
 
-          <div class="panes" id="panes">
-            <div class="pane editor-pane" id="editorPane">
-              <div class="pane-label">Script</div>
+          <div class="dropdown">
+            <button
+              class="icon-btn globe-btn"
+              id="language-toggle"
+              aria-expanded="false"
+              aria-haspopup="true"
+              aria-label="Choose language"
+              data-i18n-aria-label="language_aria_label"
+            >
+              <span class="globe-icon" aria-hidden="true"></span>
+            </button>
+            <div class="dropdown-menu language-menu" id="language-menu">
+              <button class="dropdown-item is-active" data-language-value="en" data-i18n="lang_english">English</button>
+              <button class="dropdown-item" data-language-value="es" data-i18n="lang_spanish">Spanish</button>
+              <button class="dropdown-item" data-language-value="uk" data-i18n="lang_ukrainian">Ukrainian</button>
+              <button class="dropdown-item" data-language-value="ru" data-i18n="lang_russian">Russian</button>
+              <button class="dropdown-item" data-language-value="fr" data-i18n="lang_french">French</button>
+              <button class="dropdown-item" data-language-value="ja" data-i18n="lang_japanese">Japanese</button>
+              <button class="dropdown-item" data-language-value="zh" data-i18n="lang_chinese">Chinese</button>
+              <button class="dropdown-item" data-language-value="ko" data-i18n="lang_korean">Korean</button>
+            </div>
+          </div>
 
-              <div class="editor-wrapper">
-                <div class="line-numbers" id="lineNumbers">
-                  <div class="line-numbers-content" id="lineNumbersContent"></div>
-                </div>
+          <div class="topbar-profile is-hidden" id="topbar-profile">
+            <div class="topbar-profile-avatar" id="topbar-profile-avatar">A</div>
+            <div class="topbar-profile-copy">
+              <strong id="topbar-profile-name">Anna</strong>
+            </div>
+          </div>
+        </div>
+      </header>
 
-                <textarea id="editor">const name = "Anna";
-console.log("Hello, " + name);</textarea>
+      <main>
+        <section class="view is-active" id="home-view">
+          <section class="hero">
+            <div class="hero-copy">
+              <h1 data-i18n="hero_title">A professional studio for future developers.</h1>
+              <p class="hero-text">
+                <span data-i18n="hero_text"
+                  >Structured lessons, practical coding, and focused creative tools designed to help beginners grow into confident developers with strong foundations and real development habits.</span
+                >
+              </p>
+            </div>
+
+            <div class="hero-visual" aria-hidden="true">
+              <div class="hero-image-shell">
+                <img class="hero-image" src="assets/javascript-learning-studio.png" alt="" />
               </div>
             </div>
+          </section>
 
-            <div class="divider" id="divider"></div>
+          <section class="mode-grid">
+            <article class="mode-card">
+              <p class="mode-kicker">01</p>
+              <div class="mode-card-copy">
+                <h2 data-i18n="card_console_title">Console</h2>
+                <p data-i18n="card_console_text">Write JavaScript, run it, and see output in a terminal-style panel.</p>
+              </div>
+              <button class="mode-btn" data-view-target="console-view" data-i18n="card_console_button">Open Console</button>
+            </article>
 
-            <div class="pane console-pane">
-              <div class="pane-label">Console</div>
-              <div id="console"></div>
+            <article class="mode-card">
+              <p class="mode-kicker">02</p>
+              <div class="mode-card-copy">
+                <h2 data-i18n="card_builder_title">HTML / CSS Builder</h2>
+                <p data-i18n="card_builder_text">Write layout and styles on the left and preview the design on the right.</p>
+              </div>
+              <button class="mode-btn" data-view-target="builder-view" data-i18n="card_builder_button">Open Builder</button>
+            </article>
+
+            <article class="mode-card">
+              <p class="mode-kicker">03</p>
+              <div class="mode-card-copy">
+                <h2 data-i18n="card_training_title">Training</h2>
+                <p data-i18n="card_training_text">Open a guided practice area with step-by-step JavaScript tasks from your course.</p>
+              </div>
+              <button class="mode-btn" data-view-target="training-view" data-i18n="card_training_button">Open Training</button>
+            </article>
+          </section>
+        </section>
+
+        <section class="view" id="console-view">
+          <section class="workspace-heading">
+            <div>
+              <p class="eyebrow" data-i18n="console_kicker">Console</p>
+              <h2 data-i18n="console_title">Write JavaScript and check the output.</h2>
+            </div>
+          </section>
+
+          <section class="workspace split-workspace" id="console-workspace">
+            <article class="editor-card">
+              <div class="editor-head">
+                <span class="editor-label" data-i18n="console_editor_label">JavaScript</span>
+                <div class="mini-actions">
+                  <button class="mini-reset-btn" id="console-clear-btn" data-i18n="action_clear">Clear</button>
+                </div>
+              </div>
+
+              <div class="overlay-editor">
+                <div class="line-numbers" id="console-line-numbers" aria-hidden="true"></div>
+                <pre class="highlight-layer" id="console-highlight"></pre>
+                <textarea
+                  class="code-input"
+                  id="console-input"
+                  spellcheck="false"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                ></textarea>
+              </div>
+            </article>
+
+            <button
+              class="divider console-divider"
+              id="console-divider"
+              aria-label="Resize console panels"
+              aria-orientation="vertical"
+            ></button>
+
+            <article class="output-card">
+              <div class="editor-head">
+                <span class="editor-label" data-i18n="console_output_label">Output</span>
+              </div>
+              <div class="terminal-body" id="console-output"></div>
+            </article>
+          </section>
+
+          <div class="console-actions-bottom">
+            <button class="toolbar-btn" id="console-reset-btn" data-i18n="action_reset">Reset</button>
+            <button class="toolbar-btn toolbar-btn-primary" id="console-run-btn" data-i18n="action_run">Run</button>
+          </div>
+        </section>
+
+        <section class="view" id="builder-view">
+          <section class="workspace-heading">
+            <div>
+              <p class="eyebrow" data-i18n="builder_kicker">Builder</p>
+              <h2 data-i18n="builder_title">Build with HTML and CSS, then preview the result.</h2>
+            </div>
+          </section>
+
+          <section class="workspace builder-workspace">
+            <div class="builder-editors">
+              <article class="editor-card">
+                <div class="editor-head">
+                  <span class="editor-label" data-i18n="html_label">HTML</span>
+                  <div class="mini-actions">
+                    <button class="mini-reset-btn" id="html-undo-btn" data-i18n="action_undo">Undo</button>
+                    <button class="mini-reset-btn" id="html-reset-btn" data-i18n="action_reset">Reset</button>
+                  </div>
+                </div>
+
+                <div class="overlay-editor small-editor">
+                  <div class="line-numbers" id="html-line-numbers" aria-hidden="true"></div>
+                  <pre class="highlight-layer" id="html-highlight"></pre>
+                  <textarea
+                    class="code-input"
+                    id="html-input"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                  ></textarea>
+                </div>
+              </article>
+
+              <article class="editor-card">
+                <div class="editor-head">
+                  <span class="editor-label" data-i18n="css_label">CSS</span>
+                  <div class="mini-actions">
+                    <button class="mini-reset-btn" id="css-undo-btn" data-i18n="action_undo">Undo</button>
+                    <button class="mini-reset-btn" id="css-reset-btn" data-i18n="action_reset">Reset</button>
+                  </div>
+                </div>
+
+                <div class="overlay-editor small-editor">
+                  <div class="line-numbers" id="css-line-numbers" aria-hidden="true"></div>
+                  <pre class="highlight-layer" id="css-highlight"></pre>
+                  <textarea
+                    class="code-input"
+                    id="css-input"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                  ></textarea>
+                </div>
+              </article>
+            </div>
+
+            <article class="preview-card">
+              <div class="editor-head">
+                <span class="editor-label" data-i18n="preview_label">Preview</span>
+              </div>
+              <iframe
+                class="preview-frame"
+                id="preview-frame"
+                title="Preview"
+                sandbox="allow-scripts"
+              ></iframe>
+            </article>
+          </section>
+
+          <div class="builder-actions-bottom">
+            <button class="toolbar-btn toolbar-btn-primary" id="builder-run-btn" data-i18n="action_run">Run</button>
+          </div>
+        </section>
+
+        <section class="view" id="training-view">
+          <section class="workspace-heading">
+            <div>
+              <p class="eyebrow" data-i18n="training_kicker">Training</p>
+              <h2 class="training-page-title" data-i18n="training_title">Coding in JavaScript</h2>
+            </div>
+          </section>
+
+          <section class="workspace training-layout">
+            <div class="training-main">
+              <section class="training-panel training-entry" id="training-entry">
+                <p class="training-entry-text training-entry-subtitle" data-i18n="training_intro_text">
+                  Practice JavaScript with guided tasks from your course.
+                </p>
+
+                <label class="training-field">
+                  <span data-i18n="training_name_label">Your name</span>
+                  <input
+                    type="text"
+                    id="training-name-input"
+                    maxlength="24"
+                    placeholder=""
+                  />
+                </label>
+                <div class="training-entry-note" id="training-name-note"></div>
+
+                <div class="training-avatar-inline">
+                  <button class="toolbar-btn" id="training-avatar-open-btn" data-i18n="training_avatar_button">Choose avatar</button>
+                </div>
+
+                <button class="toolbar-btn toolbar-btn-primary" id="training-start-btn" data-i18n="training_start_button">
+                  Next
+                </button>
+              </section>
+
+              <section class="training-campus is-hidden" id="training-campus">
+                <section class="training-menu-page" id="training-menu-page">
+                  <article class="training-panel training-banner">
+                    <p class="training-mini-label" data-i18n="training_banner_kicker">Course menu</p>
+                    <h3 id="training-welcome-title">Welcome</h3>
+                    <p class="training-entry-text" data-i18n="training_banner_text">
+                      Open a lesson from the course menu and move through the material one step at a time.
+                    </p>
+                  </article>
+
+                  <section class="training-course-layout" id="training-course-layout">
+                    <div class="training-lesson-menu-wrap" id="training-lesson-menu-wrap">
+                      <div class="training-menu-head">
+                        <p class="training-mini-label" data-i18n="training_contents_kicker">Contents</p>
+                        <div class="training-admin-actions" id="training-admin-actions">
+                          <button class="mini-reset-btn" id="training-add-unit-btn" type="button">+ Unit</button>
+                          <button class="mini-reset-btn" id="training-add-lesson-btn" type="button">+ Lesson</button>
+                        </div>
+                      </div>
+                      <div class="training-lesson-menu" id="training-topics"></div>
+                    </div>
+                  </section>
+                </section>
+
+                <section class="training-detail-page is-hidden" id="training-detail-page">
+                  <p class="training-mini-label" data-i18n="training_banner_kicker">Course menu</p>
+                  <div class="training-detail-layout">
+                    <article class="training-panel training-lesson-view" id="training-topic-preview">
+                      <div class="training-detail-topbar">
+                        <button class="toolbar-btn" id="training-detail-back-btn" data-i18n="training_back_to_menu">Back to menu</button>
+                        <div class="training-detail-actions">
+                          <button class="toolbar-btn" id="training-edit-btn" data-i18n="training_edit">Edit</button>
+                          <button class="toolbar-btn toolbar-btn-primary is-hidden" id="training-save-btn" data-i18n="training_save">Save</button>
+                        </div>
+                      </div>
+                      <p class="training-mini-label" id="training-lesson-meta">Lesson</p>
+                      <input class="training-meta-editor is-hidden" id="training-meta-editor" />
+                      <h3 id="training-topic-preview-title" data-i18n="training_topic_preview_title">Choose a lesson from the course menu</h3>
+                      <input class="training-title-editor is-hidden" id="training-title-editor" />
+                      <div class="training-lesson-scroll">
+                        <div class="training-entry-text training-lesson-body" id="training-topic-preview-text" data-i18n="training_topic_preview_text">
+                          Later, each lesson can open theory, guided tasks, and practice steps.
+                        </div>
+                        <div class="training-editor-tools is-hidden" id="training-editor-tools">
+                          <button class="editor-tool-btn editor-tool-letter" type="button" data-editor-command="bold" aria-label="Bold" title="Bold"><strong>B</strong></button>
+                          <button class="editor-tool-btn editor-tool-letter" type="button" data-editor-command="italic" aria-label="Italic" title="Italic"><em>I</em></button>
+                          <button class="editor-tool-btn editor-tool-letter" type="button" data-editor-command="underline" aria-label="Underline" title="Underline"><span class="editor-tool-underline">U</span></button>
+                          <button class="editor-tool-btn editor-tool-letter" type="button" data-editor-command="strikeThrough" aria-label="Strike" title="Strike"><span class="editor-tool-strike">S</span></button>
+                          <select class="editor-select editor-select-icon" id="training-format-block" aria-label="Block style" title="Block style">
+                            <option value="p">¶</option>
+                            <option value="h2">H2</option>
+                            <option value="h3">H3</option>
+                            <option value="blockquote">❝</option>
+                          </select>
+                          <select class="editor-select" id="training-font-family">
+                            <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="'Georgia', serif">Georgia</option>
+                            <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+                            <option value="'Verdana', sans-serif">Verdana</option>
+                            <option value="'Tahoma', sans-serif">Tahoma</option>
+                            <option value="'Garamond', serif">Garamond</option>
+                            <option value="Georgia, serif">Serif</option>
+                            <option value="'Courier New', monospace">Courier</option>
+                          </select>
+                          <select class="editor-select" id="training-font-size">
+                            <option value="8px">8</option>
+                            <option value="10px">10</option>
+                            <option value="12px">12</option>
+                            <option value="14px">14</option>
+                            <option value="16px" selected>16</option>
+                            <option value="18px">18</option>
+                            <option value="20px">20</option>
+                            <option value="24px">24</option>
+                            <option value="32px">32</option>
+                            <option value="40px">40</option>
+                            <option value="48px">48</option>
+                            <option value="56px">56</option>
+                            <option value="64px">64</option>
+                            <option value="72px">72</option>
+                          </select>
+                          <select class="editor-select editor-select-icon" id="training-line-height" aria-label="Line spacing" title="Line spacing">
+                            <option value="">↕</option>
+                            <option value="1.1">1.1</option>
+                            <option value="1.3">1.3</option>
+                            <option value="1.5">1.5</option>
+                            <option value="1.7">1.7</option>
+                            <option value="2">2.0</option>
+                            <option value="2.4">2.4</option>
+                          </select>
+                          <select class="editor-select editor-select-icon" id="training-list-style" aria-label="List style" title="List style">
+                            <option value="">☰</option>
+                            <option value="disc">•</option>
+                            <option value="circle">◦</option>
+                            <option value="square">▪</option>
+                            <option value="decimal">1.</option>
+                            <option value="lower-alpha">a.</option>
+                            <option value="lower-roman">i.</option>
+                          </select>
+                          <select class="editor-select editor-select-icon" id="training-text-align" aria-label="Text alignment" title="Text alignment">
+                            <option value="">≣</option>
+                            <option value="left">⇤</option>
+                            <option value="center">↔</option>
+                            <option value="right">⇥</option>
+                          </select>
+                          <button class="editor-tool-btn editor-tool-icon" type="button" data-editor-command="undo" aria-label="Undo" title="Undo">↶</button>
+                          <button class="editor-tool-btn editor-tool-icon" type="button" id="training-clear-editor-btn" aria-label="Clear" title="Clear">✕</button>
+                          <button class="editor-tool-btn editor-tool-icon" type="button" id="training-insert-code-btn" aria-label="Code" title="Code">&lt;/&gt;</button>
+                          <label class="editor-color-control" title="Text color">
+                            <span>A</span>
+                            <input type="color" id="training-text-color" value="#eef4ff" />
+                          </label>
+                          <label class="editor-color-control" title="Highlight">
+                            <span>◼</span>
+                            <input type="color" id="training-highlight-color" value="#3b82f6" />
+                          </label>
+                          <button class="editor-tool-btn editor-tool-icon" type="button" id="training-insert-image-btn" aria-label="Image" title="Image">🖼</button>
+                          <input class="is-hidden" type="file" id="training-image-upload" accept="image/*" />
+                        </div>
+                        <div class="training-lesson-editor is-hidden" id="training-lesson-editor" contenteditable="true"></div>
+                      </div>
+                    <div class="training-lesson-actions">
+                      <button class="toolbar-btn" id="training-topic-prev-btn" data-i18n="training_previous">Previous</button>
+                      <button class="toolbar-btn toolbar-btn-primary" id="training-topic-open-btn" data-i18n="training_next">Next</button>
+                    </div>
+                  </article>
+
+                    <aside class="training-panel training-lesson-helper" id="training-lesson-helper">
+                      <p class="training-mini-label" data-i18n="training_helper_badge">Helper</p>
+                      <div class="training-helper-avatar" id="training-helper-avatar">?</div>
+                      <h3 id="training-helper-title" data-i18n="training_helper_title">Ask helper</h3>
+                      <button class="toolbar-btn toolbar-btn-primary" id="training-helper-toggle-btn" data-i18n="training_helper_toggle">Ask</button>
+                      <div class="training-helper-drawer is-hidden" id="training-helper-drawer">
+                        <div class="training-helper-settings">
+                          <button class="training-row-btn" id="training-helper-key-btn" type="button">Helper key</button>
+                          <button class="training-row-btn training-row-btn-danger" id="training-helper-clear-key-btn" type="button">Clear key</button>
+                        </div>
+                        <div class="training-helper-response is-hidden" id="training-helper-response"></div>
+                        <textarea
+                          class="training-helper-input"
+                          id="training-helper-input"
+                          rows="5"
+                          data-i18n-placeholder="training_helper_placeholder"
+                          placeholder="Write your question here"
+                        ></textarea>
+                        <button class="toolbar-btn" id="training-helper-send-btn" data-i18n="training_helper_send">Send</button>
+                      </div>
+                    </aside>
+                  </div>
+                </section>
+              </section>
+            </div>
+          </section>
+
+          <div class="modal is-hidden" id="avatar-modal">
+            <div class="modal-backdrop" id="avatar-modal-close"></div>
+            <div class="modal-card">
+              <div class="modal-head">
+                <div>
+                  <p class="training-mini-label" data-i18n="training_avatar_modal_kicker">Avatar</p>
+                  <h3 data-i18n="training_avatar_modal_title">Choose an avatar</h3>
+                </div>
+                <button class="icon-btn modal-close-btn" id="avatar-modal-close-btn" aria-label="Close">×</button>
+              </div>
+              <div class="avatar-grid" id="training-avatar-grid"></div>
             </div>
           </div>
-        </div>
+        </section>
+        <footer class="site-footer">
+          <div class="site-footer-center">
+            <span class="site-footer-rights" data-i18n="footer_rights">All rights reserved.</span>
+            <div class="site-footer-links">
+              <a href="#" data-i18n="footer_contact">Contact</a>
+              <a href="#" data-i18n="footer_privacy">Privacy</a>
+              <a href="#" data-i18n="footer_terms">Terms</a>
+            </div>
+            <span class="site-footer-copy" data-i18n="footer_copyright">© 2026 JavaScript Learning Studio</span>
+          </div>
+        </footer>
+      </main>
+    </div>
 
-        <div class="helper-text">
-          Code runs automatically a moment after you stop typing. If there is an error, it will appear in the console.
-        </div>
-
-        <div class="helper-text">
-          This is your practice space. Experiment, make mistakes, and learn by trying.
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <script>
-    const languageSelect = document.getElementById("languageSelect");
-    const welcomeScreen = document.getElementById("welcomeScreen");
-    const playgroundScreen = document.getElementById("playgroundScreen");
-    const nextBtn = document.getElementById("nextBtn");
-    const backBtn = document.getElementById("backBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const nameInput = document.getElementById("nameInput");
-    const greetingText = document.getElementById("greetingText");
-    const editor = document.getElementById("editor");
-    const consoleBox = document.getElementById("console");
-    const divider = document.getElementById("divider");
-    const editorPane = document.getElementById("editorPane");
-    const panes = document.getElementById("panes");
-    const lineNumbers = document.getElementById("lineNumbers");
-    const lineNumbersContent = document.getElementById("lineNumbersContent");
-
-    const welcomeTitle = document.getElementById("welcomeTitle");
-    const welcomeText = document.getElementById("welcomeText");
-
-    const translations = {
-      en: {
-        enterName: "Enter your name",
-        typeName: "Type your name below and press Next.",
-        placeholder: "Your name",
-        next: "Next",
-        back: "Back",
-        clear: "Clear",
-        hello: "Hello",
-        defaultName: "Friend"
-      },
-      es: {
-        enterName: "Enter your name",
-        typeName: "Type your name below and press Next.",
-        placeholder: "Your name",
-        next: "Next",
-        back: "Back",
-        clear: "Clear",
-        hello: "Hola",
-        defaultName: "Amigo"
-      },
-      fr: {
-        enterName: "Enter your name",
-        typeName: "Type your name below and press Next.",
-        placeholder: "Your name",
-        next: "Next",
-        back: "Back",
-        clear: "Clear",
-        hello: "Bonjour",
-        defaultName: "Ami"
-      },
-      ru: {
-        enterName: "Введите ваше имя",
-        typeName: "Введите имя ниже и нажмите Next.",
-        placeholder: "Ваше имя",
-        next: "Next",
-        back: "Back",
-        clear: "Clear",
-        hello: "Привет",
-        defaultName: "друг"
-      },
-      uk: {
-        enterName: "Введіть ваше ім’я",
-        typeName: "Введіть ім’я нижче і натисніть Next.",
-        placeholder: "Ваше ім’я",
-        next: "Next",
-        back: "Back",
-        clear: "Clear",
-        hello: "Привіт",
-        defaultName: "друже"
-      }
-    };
-
-    function updateLanguageUI() {
-      const lang = languageSelect.value;
-      const t = translations[lang];
-
-      welcomeTitle.textContent = t.enterName;
-      welcomeText.textContent = t.typeName;
-      nameInput.placeholder = t.placeholder;
-      nextBtn.textContent = t.next;
-      backBtn.textContent = t.back;
-      clearBtn.textContent = t.clear;
-
-      updateGreeting();
-    }
-
-    function updateGreeting() {
-      const lang = languageSelect.value;
-      const t = translations[lang];
-      const name = nameInput.value.trim() || t.defaultName;
-      greetingText.textContent = `${t.hello}, ${name}`;
-    }
-
-    nextBtn.addEventListener("click", () => {
-      welcomeScreen.classList.remove("active");
-      playgroundScreen.classList.add("active");
-      updateGreeting();
-      updateLineNumbers();
-      runCode();
-    });
-
-    backBtn.addEventListener("click", () => {
-      playgroundScreen.classList.remove("active");
-      welcomeScreen.classList.add("active");
-    });
-
-    languageSelect.addEventListener("change", updateLanguageUI);
-    nameInput.addEventListener("input", updateGreeting);
-
-    clearBtn.addEventListener("click", () => {
-      editor.value = "";
-      consoleBox.textContent = "";
-      updateLineNumbers();
-    });
-
-    function updateLineNumbers() {
-      const lines = Math.max(editor.value.split("\n").length, 1);
-      lineNumbersContent.innerHTML = "";
-
-      for (let i = 1; i <= lines; i++) {
-        const line = document.createElement("div");
-        line.textContent = i;
-        lineNumbersContent.appendChild(line);
-      }
-    }
-
-    function runCode() {
-      const code = editor.value;
-      const output = [];
-
-      const fakeConsole = {
-        log: (...args) => {
-          output.push(args.join(" "));
-        }
-      };
-
-      try {
-        const wrappedCode = new Function("console", code);
-        wrappedCode(fakeConsole);
-
-        consoleBox.textContent = output.length
-          ? output.join("\n")
-          : "No output";
-      } catch (error) {
-        consoleBox.textContent = "Error: " + error.message;
-      }
-    }
-
-    let typingTimer;
-    editor.addEventListener("input", () => {
-      updateLineNumbers();
-      clearTimeout(typingTimer);
-      typingTimer = setTimeout(runCode, 400);
-    });
-
-    editor.addEventListener("scroll", () => {
-      lineNumbers.scrollTop = editor.scrollTop;
-    });
-
-    let isDragging = false;
-
-    divider.addEventListener("mousedown", () => {
-      isDragging = true;
-      document.body.style.userSelect = "none";
-    });
-
-    document.addEventListener("mouseup", () => {
-      isDragging = false;
-      document.body.style.userSelect = "";
-    });
-
-    document.addEventListener("mousemove", (e) => {
-      if (!isDragging || window.innerWidth <= 900) return;
-
-      const panesRect = panes.getBoundingClientRect();
-      let newLeftWidth = e.clientX - panesRect.left;
-
-      const minWidth = 180;
-      const maxWidth = panesRect.width - 180;
-
-      if (newLeftWidth < minWidth) newLeftWidth = minWidth;
-      if (newLeftWidth > maxWidth) newLeftWidth = maxWidth;
-
-      editorPane.style.width = newLeftWidth + "px";
-    });
-
-    updateLanguageUI();
-    updateLineNumbers();
-    runCode();
-  </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
