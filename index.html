@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Source+Code+Pro:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260517training6" />
   </head>
   <body>
     <div class="page-shell">
@@ -22,15 +22,9 @@
       </div>
 
       <header class="topbar">
-        <div class="topbar-brand" aria-label="JavaScript Learning Studio">
-          <div class="topbar-brand-mark" aria-hidden="true">
-            <span class="topbar-brand-core">
-              <span class="topbar-brand-brace topbar-brand-brace-left">{</span>
-              <span class="topbar-brand-text">JS</span>
-              <span class="topbar-brand-brace topbar-brand-brace-right">}</span>
-            </span>
-          </div>
-        </div>
+        <button class="topbar-brand topbar-home-link" type="button" data-view-target="home-view" aria-label="Open home page">
+          <span class="topbar-brand-wordmark">JavaScript Learning Studio</span>
+        </button>
 
         <nav class="topbar-menu" aria-label="Main">
           <button class="menu-btn is-active" data-view-target="home-view" data-i18n="menu_home">Home</button>
@@ -42,13 +36,14 @@
         <div class="topbar-controls">
           <div class="dropdown">
             <button
-              class="icon-btn"
+              class="icon-btn settings-btn"
               id="theme-toggle"
               aria-expanded="false"
               aria-haspopup="true"
-              data-i18n="style_button"
+              aria-label="Settings"
+              data-i18n-aria-label="style_button"
             >
-              Style
+              <span class="settings-icon" aria-hidden="true"></span>
             </button>
             <div class="dropdown-menu theme-menu" id="theme-menu">
               <button class="dropdown-item is-active" data-theme-value="blue" data-i18n="theme_blue">Blue</button>
@@ -68,7 +63,7 @@
               aria-label="Choose language"
               data-i18n-aria-label="language_aria_label"
             >
-              <span class="globe-icon" aria-hidden="true"></span>
+              <span class="language-current-label" id="language-current-label">ENG</span>
             </button>
             <div class="dropdown-menu language-menu" id="language-menu">
               <button class="dropdown-item is-active" data-language-value="en" data-i18n="lang_english">English</button>
@@ -95,24 +90,33 @@
         <section class="view is-active" id="home-view">
           <section class="hero">
             <div class="hero-copy">
-              <h1 data-i18n="hero_title">A professional studio for future developers.</h1>
-              <p class="hero-text">
-                <span data-i18n="hero_text"
-                  >Structured lessons, practical coding, and focused creative tools designed to help beginners grow into confident developers with strong foundations and real development habits.</span
-                >
-              </p>
+              <h1 class="hero-site-title" data-i18n="hero_kicker">JavaScript Learning Studio</h1>
+              <p class="hero-site-subtitle" data-i18n="hero_title">A professional studio for future developers.</p>
             </div>
-
             <div class="hero-visual" aria-hidden="true">
-              <div class="hero-image-shell">
-                <img class="hero-image" src="assets/javascript-learning-studio.png" alt="" />
+              <div class="hero-light-stage hero-cube-stage">
+                <div class="hero-light-core"></div>
+                <span class="hero-wire hero-wire-a"></span>
+                <span class="hero-wire hero-wire-b"></span>
+                <span class="hero-wire hero-wire-c"></span>
+                <div class="hero-cube-shell">
+                  <div class="hero-cube-spin">
+                    <div class="hero-js-cube">
+                      <div class="hero-js-cube-face hero-js-cube-front"></div>
+                      <div class="hero-js-cube-face hero-js-cube-back"></div>
+                      <div class="hero-js-cube-face hero-js-cube-right"></div>
+                      <div class="hero-js-cube-face hero-js-cube-left"></div>
+                      <div class="hero-js-cube-face hero-js-cube-top"></div>
+                      <div class="hero-js-cube-face hero-js-cube-bottom"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
 
           <section class="mode-grid">
             <article class="mode-card">
-              <p class="mode-kicker">01</p>
               <div class="mode-card-copy">
                 <h2 data-i18n="card_console_title">Console</h2>
                 <p data-i18n="card_console_text">Write JavaScript, run it, and see output in a terminal-style panel.</p>
@@ -121,7 +125,6 @@
             </article>
 
             <article class="mode-card">
-              <p class="mode-kicker">02</p>
               <div class="mode-card-copy">
                 <h2 data-i18n="card_builder_title">HTML / CSS Builder</h2>
                 <p data-i18n="card_builder_text">Write layout and styles on the left and preview the design on the right.</p>
@@ -130,7 +133,6 @@
             </article>
 
             <article class="mode-card">
-              <p class="mode-kicker">03</p>
               <div class="mode-card-copy">
                 <h2 data-i18n="card_training_title">Training</h2>
                 <p data-i18n="card_training_text">Open a guided practice area with step-by-step JavaScript tasks from your course.</p>
@@ -153,6 +155,7 @@
               <div class="editor-head">
                 <span class="editor-label" data-i18n="console_editor_label">JavaScript</span>
                 <div class="mini-actions">
+                  <button class="mini-reset-btn" id="console-undo-btn" data-i18n="action_undo">Undo</button>
                   <button class="mini-reset-btn" id="console-clear-btn" data-i18n="action_clear">Clear</button>
                 </div>
               </div>
@@ -263,63 +266,98 @@
           </section>
 
           <div class="builder-actions-bottom">
+            <button class="toolbar-btn" id="builder-reset-btn" data-i18n="action_reset">Reset</button>
             <button class="toolbar-btn toolbar-btn-primary" id="builder-run-btn" data-i18n="action_run">Run</button>
           </div>
         </section>
 
         <section class="view" id="training-view">
-          <section class="workspace-heading">
-            <div>
+          <section class="workspace-heading training-heading">
+            <div class="training-heading-copy">
               <p class="eyebrow" data-i18n="training_kicker">Training</p>
               <h2 class="training-page-title" data-i18n="training_title">Coding in JavaScript</h2>
             </div>
+            <p class="training-heading-welcome is-hidden" id="training-welcome-title"></p>
           </section>
 
           <section class="workspace training-layout">
             <div class="training-main">
               <section class="training-panel training-entry" id="training-entry">
-                <p class="training-entry-text training-entry-subtitle" data-i18n="training_intro_text">
-                  Practice JavaScript with guided tasks from your course.
-                </p>
+                <p class="training-login-label" data-i18n="training_login_label">Login</p>
 
-                <label class="training-field">
-                  <span data-i18n="training_name_label">Your name</span>
+                <div class="training-field training-field-inline">
                   <input
                     type="text"
                     id="training-name-input"
                     maxlength="24"
-                    placeholder=""
+                    placeholder="Your name"
+                    data-i18n-placeholder="training_name_label"
                   />
-                </label>
+                  <button class="toolbar-btn training-avatar-icon-btn" id="training-avatar-open-btn" aria-label="Choose avatar" data-i18n-aria-label="training_avatar_button"><span class="avatar-toggle-icon" aria-hidden="true"></span></button>
+                </div>
                 <div class="training-entry-note" id="training-name-note"></div>
 
-                <div class="training-avatar-inline">
-                  <button class="toolbar-btn" id="training-avatar-open-btn" data-i18n="training_avatar_button">Choose avatar</button>
-                </div>
-
                 <button class="toolbar-btn toolbar-btn-primary" id="training-start-btn" data-i18n="training_start_button">
-                  Next
+                  Enter
                 </button>
               </section>
 
               <section class="training-campus is-hidden" id="training-campus">
                 <section class="training-menu-page" id="training-menu-page">
-                  <article class="training-panel training-banner">
-                    <p class="training-mini-label" data-i18n="training_banner_kicker">Course menu</p>
-                    <h3 id="training-welcome-title">Welcome</h3>
-                    <p class="training-entry-text" data-i18n="training_banner_text">
-                      Open a lesson from the course menu and move through the material one step at a time.
-                    </p>
-                  </article>
-
                   <section class="training-course-layout" id="training-course-layout">
                     <div class="training-lesson-menu-wrap" id="training-lesson-menu-wrap">
                       <div class="training-menu-head">
-                        <p class="training-mini-label" data-i18n="training_contents_kicker">Contents</p>
+                        <p class="training-mini-label training-contents-label" id="training-contents-label" data-i18n="training_contents_kicker">Contents</p>
                         <div class="training-admin-actions" id="training-admin-actions">
                           <button class="mini-reset-btn" id="training-add-unit-btn" type="button">+ Unit</button>
                           <button class="mini-reset-btn" id="training-add-lesson-btn" type="button">+ Lesson</button>
                         </div>
+                      </div>
+                      <div class="training-menu-editor is-hidden" id="training-menu-editor">
+                        <div class="training-menu-editor-topbar">
+                          <p class="training-menu-editor-label" id="training-menu-editor-label">Edit item</p>
+                          <div class="training-menu-editor-actions">
+                            <button class="toolbar-btn" id="training-menu-editor-cancel-btn" type="button">Cancel</button>
+                            <button class="toolbar-btn toolbar-btn-primary" id="training-menu-editor-save-btn" type="button">Save</button>
+                          </div>
+                        </div>
+                        <div class="training-menu-editor-tools">
+                          <select class="editor-select" id="training-menu-font-family">
+                            <option value="'Source Code Pro', monospace">Source Code Pro</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="Verdana, sans-serif">Verdana</option>
+                            <option value="Tahoma, sans-serif">Tahoma</option>
+                          </select>
+                          <select class="editor-select" id="training-menu-font-size">
+                            <option value="1rem">16</option>
+                            <option value="1.125rem">18</option>
+                            <option value="1.25rem">20</option>
+                            <option value="1.5rem">24</option>
+                            <option value="1.75rem">28</option>
+                            <option value="2rem">32</option>
+                          </select>
+                          <label class="editor-color-control" id="training-menu-color-control" title="Text color">
+                            <span>A</span>
+                            <input type="color" id="training-menu-color" value="#dff4ff" />
+                          </label>
+                          <div class="training-menu-color-swatches" id="training-menu-color-swatches">
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#dff4ff" aria-label="Ice" style="--swatch:#dff4ff"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#8bd3ff" aria-label="Sky" style="--swatch:#8bd3ff"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#5ea8ff" aria-label="Blue" style="--swatch:#5ea8ff"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#c4b5fd" aria-label="Lilac" style="--swatch:#c4b5fd"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#f9a8d4" aria-label="Pink" style="--swatch:#f9a8d4"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#fde68a" aria-label="Gold" style="--swatch:#fde68a"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#86efac" aria-label="Mint" style="--swatch:#86efac"></button>
+                            <button class="training-menu-swatch" type="button" data-menu-color-swatch="#ffffff" aria-label="White" style="--swatch:#ffffff"></button>
+                          </div>
+                        </div>
+                        <div class="training-menu-editor-fields">
+                          <input class="training-menu-editor-input" id="training-menu-title-input" placeholder="Title" />
+                          <input class="training-menu-editor-input is-hidden" id="training-menu-section-input" placeholder="Section" />
+                        </div>
+                        <div class="training-menu-editor-preview" id="training-menu-editor-preview">Preview</div>
                       </div>
                       <div class="training-lesson-menu" id="training-topics"></div>
                     </div>
@@ -327,7 +365,6 @@
                 </section>
 
                 <section class="training-detail-page is-hidden" id="training-detail-page">
-                  <p class="training-mini-label" data-i18n="training_banner_kicker">Course menu</p>
                   <div class="training-detail-layout">
                     <article class="training-panel training-lesson-view" id="training-topic-preview">
                       <div class="training-detail-topbar">
@@ -339,7 +376,7 @@
                       </div>
                       <p class="training-mini-label" id="training-lesson-meta">Lesson</p>
                       <input class="training-meta-editor is-hidden" id="training-meta-editor" />
-                      <h3 id="training-topic-preview-title" data-i18n="training_topic_preview_title">Choose a lesson from the course menu</h3>
+                      <h3 id="training-topic-preview-title" data-i18n="training_topic_preview_title">Choose a lesson</h3>
                       <input class="training-title-editor is-hidden" id="training-title-editor" />
                       <div class="training-lesson-scroll">
                         <div class="training-entry-text training-lesson-body" id="training-topic-preview-text" data-i18n="training_topic_preview_text">
@@ -411,13 +448,14 @@
                           <button class="editor-tool-btn editor-tool-icon" type="button" data-editor-command="undo" aria-label="Undo" title="Undo">↶</button>
                           <button class="editor-tool-btn editor-tool-icon" type="button" id="training-clear-editor-btn" aria-label="Clear" title="Clear">✕</button>
                           <button class="editor-tool-btn editor-tool-icon" type="button" id="training-insert-code-btn" aria-label="Code" title="Code">&lt;/&gt;</button>
-                          <label class="editor-color-control" title="Text color">
+                          <button class="editor-tool-btn editor-tool-icon" type="button" id="training-insert-link-btn" aria-label="Link" title="Link">🔗</button>
+                          <label class="editor-color-control" id="training-text-color-control" title="Text color">
                             <span>A</span>
-                            <input type="color" id="training-text-color" value="#eef4ff" />
+                            <input type="color" id="training-text-color" value="#2563eb" />
                           </label>
-                          <label class="editor-color-control" title="Highlight">
-                            <span>◼</span>
-                            <input type="color" id="training-highlight-color" value="#3b82f6" />
+                          <label class="editor-color-control" id="training-highlight-color-control" title="Highlight color">
+                            <span>▣</span>
+                            <input type="color" id="training-highlight-color" value="#fde68a" />
                           </label>
                           <button class="editor-tool-btn editor-tool-icon" type="button" id="training-insert-image-btn" aria-label="Image" title="Image">🖼</button>
                           <input class="is-hidden" type="file" id="training-image-upload" accept="image/*" />
@@ -473,18 +511,17 @@
         </section>
         <footer class="site-footer">
           <div class="site-footer-center">
-            <span class="site-footer-rights" data-i18n="footer_rights">All rights reserved.</span>
             <div class="site-footer-links">
               <a href="#" data-i18n="footer_contact">Contact</a>
               <a href="#" data-i18n="footer_privacy">Privacy</a>
               <a href="#" data-i18n="footer_terms">Terms</a>
             </div>
-            <span class="site-footer-copy" data-i18n="footer_copyright">© 2026 JavaScript Learning Studio</span>
+            <span class="site-footer-brand">JavaScript Learning Studio</span>
+            <span class="site-footer-copy" data-i18n="footer_copyright">© 2026</span>
           </div>
         </footer>
       </main>
     </div>
-
-    <script src="script.js"></script>
+    <script src="script.js?v=20260517training5"></script>
   </body>
 </html>

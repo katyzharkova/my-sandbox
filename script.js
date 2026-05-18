@@ -1,60 +1,299 @@
-const consoleDefaultCode = `// JavaScript console
-const name = "Anna";
-const score = 95;
+const consoleDefaultCode = `// Hello Playground console
+const student = "Lina";
+const lesson = "Functions";
+const score = 96;
+const nextScore = score + 4;
 
-console.log("Student:", name);
-console.log("Score:", score);
-console.log("Result:", score + 5);`;
+console.log("Hello Playground");
+console.log("Student:", student);
+console.log("Lesson:", lesson);
+console.log("Score:", nextScore);
+console.log({ level: "Starter", ready: true });`;
 
-const builderDefaultHtml = `<section class="card">
-  <p class="eyebrow">Live Preview</p>
-  <h2>Hello, Playground</h2>
-  <p>Edit this HTML and CSS, then click Run.</p>
-  <button>Try</button>
+const builderDefaultHtml = `<section class="demo-page">
+  <div class="demo-grid">
+    <div class="demo-copy">
+      <p class="demo-kicker">Hello Playground</p>
+      <h1>Build luminous ideas with live code.</h1>
+      <p>Shape layout, color and motion in one bright interactive preview.</p>
+      <div class="demo-tags">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>Live Preview</span>
+      </div>
+    </div>
+
+    <div class="demo-stage">
+      <div class="demo-card demo-card-main">
+        <div class="demo-wave"></div>
+      </div>
+      <div class="demo-card demo-card-top"></div>
+      <div class="demo-card demo-card-side"></div>
+      <div class="demo-glow demo-glow-a"></div>
+      <div class="demo-glow demo-glow-b"></div>
+    </div>
+  </div>
 </section>`;
 
-const builderDefaultCss = `body {
+const builderDefaultCss = `* {
+  box-sizing: border-box;
+}
+
+body {
   margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1e7bff 0%, #10254d 36%, #061122 100%);
+  font-family: "Source Code Pro", monospace;
+  color: #f7fbff;
+}
+
+.demo-page {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #eff6ff, #dbeafe);
-  font-family: Arial, sans-serif;
+  padding: 36px;
 }
 
-.card {
-  width: min(420px, calc(100% - 32px));
-  padding: 32px;
-  border-radius: 24px;
-  background: white;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+.demo-grid {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 32px;
+  align-items: center;
 }
 
-.eyebrow {
-  margin: 0 0 12px;
-  color: #2563eb;
+.demo-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.demo-kicker {
+  margin: 0 0 16px;
   font-size: 12px;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  color: #97deff;
 }
 
-h2 {
-  margin: 0 0 12px;
-  font-size: 36px;
+h1 {
+  margin: 0 0 16px;
+  font-size: clamp(42px, 6vw, 72px);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
+  background: linear-gradient(90deg, #ffffff, #93d8ff, #70b4ff, #ffffff);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 p {
-  color: #475569;
-  line-height: 1.6;
+  margin: 0;
+  max-width: 34ch;
+  line-height: 1.7;
+  color: rgba(235, 244, 255, 0.88);
 }
 
-button {
-  margin-top: 16px;
-  padding: 12px 18px;
-  border: none;
+.demo-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.demo-tags span {
+  padding: 10px 14px;
   border-radius: 999px;
-  background: #2563eb;
-  color: white;
+  border: 1px solid rgba(149, 216, 255, 0.24);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 18px rgba(67, 167, 255, 0.14);
+}
+
+.demo-stage {
+  position: relative;
+  min-height: 420px;
+  border-radius: 32px;
+  overflow: hidden;
+  border: 1px solid rgba(149, 216, 255, 0.24);
+  background: linear-gradient(180deg, rgba(8, 20, 42, 0.92), rgba(4, 11, 25, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 32px 80px rgba(4, 12, 30, 0.38);
+}
+
+.demo-stage::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(circle at 50% 62%, rgba(76, 145, 255, 0.42), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(67, 224, 255, 0.22), transparent 20%),
+    repeating-linear-gradient(90deg, rgba(116, 198, 255, 0.08) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(180deg, rgba(116, 198, 255, 0.06) 0 1px, transparent 1px 30px);
+  animation: demoDrift 14s linear infinite;
+}
+
+.demo-stage::after {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 26px;
+  border: 1px solid rgba(149, 216, 255, 0.18);
+  pointer-events: none;
+}
+
+.demo-card {
+  position: absolute;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(165, 225, 255, 0.32);
+  background: linear-gradient(180deg, rgba(18, 70, 150, 0.56), rgba(10, 30, 70, 0.86));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 0 26px rgba(104, 194, 255, 0.16);
+  backdrop-filter: blur(12px);
+}
+
+.demo-card-main {
+  inset: 88px 38px 46px 72px;
+  animation: demoFloat 7s ease-in-out infinite;
+}
+
+.demo-card-main::before {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 24%),
+    radial-gradient(circle at 50% 68%, rgba(78, 173, 255, 0.3), transparent 28%),
+    linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(59, 130, 246, 0.36));
+}
+
+.demo-wave {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 24px;
+  height: 146px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(5, 18, 38, 0.12), rgba(10, 23, 46, 0.18));
+  overflow: hidden;
+}
+
+.demo-wave::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(147, 214, 255, 0.16) 0 2px, transparent 2px 12px),
+    linear-gradient(180deg, transparent 0%, rgba(110, 209, 255, 0.16) 100%);
+  mask: linear-gradient(180deg, transparent, black 18%, black 82%, transparent);
+  opacity: 0.68;
+}
+
+.demo-wave::after {
+  content: "";
+  position: absolute;
+  inset: 28px -24px 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(150, 226, 255, 0.84);
+  box-shadow: 0 0 24px rgba(93, 197, 255, 0.36);
+  transform: scaleX(1.08) translateY(24px);
+}
+
+.demo-card-top {
+  width: 184px;
+  height: 122px;
+  top: 42px;
+  right: 42px;
+  animation: demoFloat 8s ease-in-out infinite reverse;
+}
+
+.demo-card-top::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 24%),
+    repeating-linear-gradient(180deg, rgba(147, 214, 255, 0.28) 0 2px, transparent 2px 18px);
+}
+
+.demo-card-side {
+  width: 136px;
+  height: 152px;
+  left: 28px;
+  bottom: 54px;
+  animation: demoFloat 9s ease-in-out infinite 1.5s;
+}
+
+.demo-card-side::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at center, rgba(149, 216, 255, 0.48), transparent 20%),
+    linear-gradient(90deg, rgba(149, 216, 255, 0.12) 0 1px, transparent 1px 14px),
+    linear-gradient(180deg, rgba(149, 216, 255, 0.12) 0 1px, transparent 1px 14px);
+}
+
+.demo-glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(10px);
+}
+
+.demo-glow-a {
+  width: 100px;
+  height: 100px;
+  top: 34px;
+  left: 42px;
+  background: radial-gradient(circle, rgba(123, 225, 255, 0.9), rgba(123, 225, 255, 0));
+}
+
+.demo-glow-b {
+  width: 140px;
+  height: 140px;
+  right: 54px;
+  bottom: 34px;
+  background: radial-gradient(circle, rgba(91, 145, 255, 0.8), rgba(91, 145, 255, 0));
+}
+
+@keyframes demoFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes demoDrift {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-18px, -12px, 0); }
+}
+
+@media (max-width: 720px) {
+  .demo-page {
+    padding: 24px;
+  }
+
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-stage {
+    min-height: 360px;
+  }
+
+  .demo-card-main {
+    inset: 92px 22px 34px 22px;
+  }
+
+  .demo-card-top {
+    width: 148px;
+    height: 104px;
+    right: 20px;
+  }
+
+  .demo-card-side {
+    left: 16px;
+    bottom: 26px;
+  }
 }`;
 
 const IS_DEVELOPER = true;
@@ -290,7 +529,7 @@ const translations = {
     menu_console: "Console",
     menu_builder: "HTML / CSS",
     menu_training: "Training",
-    style_button: "Style",
+    style_button: "Settings",
     theme_blue: "Blue",
     theme_violet: "Violet",
     theme_green: "Green",
@@ -310,7 +549,7 @@ const translations = {
     hero_text: "Structured lessons, practical coding, and focused creative tools designed to help beginners grow into confident developers with strong foundations and real development habits.",
     footer_brand: "JavaScript Learning Studio",
     footer_tagline: "A focused learning space for future developers.",
-    footer_copyright: "© 2026 JavaScript Learning Studio",
+    footer_copyright: "© 2026",
     footer_rights: "All rights reserved.",
     footer_founded: "Founded in 2026",
     footer_contact: "Contact",
@@ -336,11 +575,12 @@ const translations = {
     preview_label: "Preview",
     training_kicker: "Training",
     training_title: "Coding in JavaScript",
-    training_intro_text: "Practice JavaScript with guided tasks from your course.",
+    training_intro_text: "",
+    training_login_label: "Login",
     training_name_label: "Your name",
     training_name_error: "Please enter a name first.",
     training_avatar_button: "Choose avatar",
-    training_start_button: "Next",
+    training_start_button: "Enter",
     training_banner_kicker: "Course menu",
     training_banner_text: "Open a lesson from the course menu and move through the material one step at a time.",
     training_welcome: "Welcome, {name}",
@@ -349,7 +589,7 @@ const translations = {
     training_locked: "Locked",
     training_open: "Open",
     training_contents_kicker: "Contents",
-    training_topic_preview_title: "Choose a lesson from the course menu",
+    training_topic_preview_title: "Choose a lesson",
     training_topic_preview_text: "Later, each lesson can open theory, guided tasks, and practice steps.",
     training_back_to_menu: "Back to menu",
     training_edit: "Edit",
@@ -382,7 +622,7 @@ const translations = {
     menu_console: "Консоль",
     menu_builder: "HTML / CSS",
     menu_training: "Тренинг",
-    style_button: "Стиль",
+    style_button: "Настройки",
     theme_blue: "Синий",
     theme_violet: "Фиолетовый",
     theme_green: "Зелёный",
@@ -398,11 +638,11 @@ const translations = {
     lang_chinese: "Китайский",
     lang_korean: "Корейский",
     hero_kicker: "JavaScript Learning Studio",
-    hero_title: "Профессиональная студия для будущих developers.",
+    hero_title: "Профессиональная студия для будущих разработчиков.",
     hero_text: "Структурированные уроки, практика кода и продуманные инструменты, которые помогают новичкам выстроить сильную базу и уверенно войти в development.",
     footer_brand: "JavaScript Learning Studio",
     footer_tagline: "Пространство для обучения будущих developers.",
-    footer_copyright: "© 2026 JavaScript Learning Studio",
+    footer_copyright: "© 2026",
     footer_rights: "Все права защищены.",
     footer_founded: "Основано в 2026",
     footer_contact: "Контакты",
@@ -428,11 +668,12 @@ const translations = {
     preview_label: "Превью",
     training_kicker: "Тренинг",
     training_title: "Coding in JavaScript",
-    training_intro_text: "Практика JavaScript с пошаговыми заданиями из твоего курса.",
+    training_intro_text: "",
+    training_login_label: "Логин",
     training_name_label: "Твоё имя",
     training_name_error: "Сначала введи имя.",
     training_avatar_button: "Выбрать аватар",
-    training_start_button: "Далее",
+    training_start_button: "Войти",
     training_banner_kicker: "Меню курса",
     training_banner_text: "Открывай урок из меню курса и проходи материал шаг за шагом.",
     training_welcome: "Привет, {name}",
@@ -441,7 +682,7 @@ const translations = {
     training_locked: "Закрыто",
     training_open: "Открыто",
     training_contents_kicker: "Содержание",
-    training_topic_preview_title: "Выбери урок из меню курса",
+    training_topic_preview_title: "Выбери урок",
     training_topic_preview_text: "Позже каждый урок сможет открывать теорию, guided tasks и практические шаги.",
     training_back_to_menu: "Назад в меню",
     training_edit: "Edit",
@@ -503,7 +744,7 @@ translations.uk = {
   menu_home: "Головна",
   menu_console: "Консоль",
   menu_training: "Тренінг",
-  style_button: "Стиль",
+  style_button: "Налаштування",
   theme_blue: "Синій",
   theme_violet: "Фіолетовий",
   theme_green: "Зелений",
@@ -519,7 +760,7 @@ translations.uk = {
   lang_chinese: "Китайська",
   lang_korean: "Корейська",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "Інтерактивне навчальне середовище для майбутніх розробників.",
+  hero_title: "Професійна студія для майбутніх розробників.",
   hero_text: "Вивчайте програмування через структуровані уроки, живу практику коду, експерименти в sandbox, побудову макетів і дослідження CSS.",
   card_console_text: "Пишіть JavaScript, запускайте його та дивіться результат у панелі виводу.",
   card_console_button: "Відкрити консоль",
@@ -535,11 +776,12 @@ translations.uk = {
   builder_title: "Створюйте HTML і CSS та одразу переглядайте результат.",
   preview_label: "Перегляд",
   training_kicker: "Тренінг",
-  training_intro_text: "Практикуйте JavaScript за допомогою покрокових завдань із вашого курсу.",
+  training_intro_text: "",
+  training_login_label: "Вхід",
   training_name_label: "Ваше ім'я",
   training_name_error: "Спочатку введіть ім'я.",
   training_avatar_button: "Обрати аватар",
-  training_start_button: "Далі",
+  training_start_button: "Увійти",
   training_banner_kicker: "Меню курсу",
   training_banner_text: "Відкривайте урок із меню курсу та проходьте матеріал крок за кроком.",
   training_welcome: "Вітаємо, {name}",
@@ -548,7 +790,7 @@ translations.uk = {
   training_locked: "Закрито",
   training_open: "Відкрито",
   training_contents_kicker: "Зміст",
-  training_topic_preview_title: "Оберіть урок із меню курсу",
+  training_topic_preview_title: "Оберіть урок",
   training_topic_preview_text: "Пізніше кожен урок зможе відкривати теорію, guided tasks і практичні кроки.",
   training_back_to_menu: "Назад до меню",
   training_edit: "Редагувати",
@@ -584,7 +826,7 @@ translations.es = {
   menu_home: "Inicio",
   menu_console: "Consola",
   menu_training: "Entrenamiento",
-  style_button: "Estilo",
+  style_button: "Ajustes",
   theme_blue: "Azul",
   theme_violet: "Violeta",
   theme_green: "Verde",
@@ -600,7 +842,7 @@ translations.es = {
   lang_chinese: "Chino",
   lang_korean: "Coreano",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "Un entorno de aprendizaje interactivo para futuros desarrolladores.",
+  hero_title: "Un estudio profesional para futuros desarrolladores.",
   hero_text: "Aprende programación con lecciones estructuradas, práctica en vivo, experimentos en sandbox, maquetación y exploración de CSS.",
   card_console_button: "Abrir consola",
   card_builder_title: "Constructor HTML / CSS",
@@ -612,10 +854,11 @@ translations.es = {
   builder_title: "Crea con HTML y CSS y luego mira el resultado.",
   preview_label: "Vista previa",
   training_kicker: "Entrenamiento",
+  training_login_label: "Acceso",
   training_name_label: "Tu nombre",
   training_name_error: "Primero escribe tu nombre.",
   training_avatar_button: "Elegir avatar",
-  training_start_button: "Siguiente",
+  training_start_button: "Entrar",
   training_banner_kicker: "Menú del curso",
   training_banner_text: "Abre una lección desde el menú del curso y avanza paso a paso.",
   training_welcome: "Bienvenida, {name}",
@@ -624,7 +867,7 @@ translations.es = {
   training_locked: "Bloqueado",
   training_open: "Abierto",
   training_contents_kicker: "Contenido",
-  training_topic_preview_title: "Elige una lección del menú del curso",
+  training_topic_preview_title: "Elige una lección",
   training_back_to_menu: "Volver al menú",
   training_edit: "Editar",
   training_save: "Guardar",
@@ -647,7 +890,7 @@ translations.fr = {
   menu_home: "Accueil",
   menu_console: "Console",
   menu_training: "Entraînement",
-  style_button: "Style",
+  style_button: "Réglages",
   theme_blue: "Bleu",
   theme_violet: "Violet",
   theme_green: "Vert",
@@ -663,7 +906,7 @@ translations.fr = {
   lang_chinese: "Chinois",
   lang_korean: "Coréen",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "Un environnement d'apprentissage interactif pour les futurs développeurs.",
+  hero_title: "Un studio professionnel pour les futurs développeurs.",
   hero_text: "Apprenez à programmer avec des leçons structurées, de la pratique en direct, des expériences sandbox, la création de mises en page et l'exploration du CSS.",
   card_console_button: "Ouvrir la console",
   card_builder_title: "Constructeur HTML / CSS",
@@ -675,10 +918,11 @@ translations.fr = {
   builder_title: "Construisez avec HTML et CSS, puis prévisualisez le résultat.",
   preview_label: "Aperçu",
   training_kicker: "Entraînement",
+  training_login_label: "Connexion",
   training_name_label: "Votre nom",
   training_name_error: "Veuillez d'abord entrer un nom.",
   training_avatar_button: "Choisir un avatar",
-  training_start_button: "Suivant",
+  training_start_button: "Entrer",
   training_banner_kicker: "Menu du cours",
   training_banner_text: "Ouvrez une leçon dans le menu du cours et avancez étape par étape.",
   training_welcome: "Bienvenue, {name}",
@@ -687,7 +931,7 @@ translations.fr = {
   training_locked: "Verrouillé",
   training_open: "Ouvert",
   training_contents_kicker: "Contenu",
-  training_topic_preview_title: "Choisissez une leçon dans le menu du cours",
+  training_topic_preview_title: "Choisissez une leçon",
   training_back_to_menu: "Retour au menu",
   training_edit: "Modifier",
   training_save: "Enregistrer",
@@ -709,7 +953,7 @@ translations.ja = {
   menu_home: "ホーム",
   menu_console: "コンソール",
   menu_training: "トレーニング",
-  style_button: "スタイル",
+  style_button: "設定",
   theme_blue: "ブルー",
   theme_violet: "バイオレット",
   theme_green: "グリーン",
@@ -725,7 +969,7 @@ translations.ja = {
   lang_chinese: "中国語",
   lang_korean: "韓国語",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "未来の開発者のためのインタラクティブ学習環境。",
+  hero_title: "未来の開発者のためのプロフェッショナルスタジオ。",
   hero_text: "構造化されたレッスン、ライブコーディング、sandbox 実験、レイアウト作成、CSS 学習でプログラミングを学びましょう。",
   card_console_button: "コンソールを開く",
   card_builder_title: "HTML / CSS ビルダー",
@@ -737,10 +981,11 @@ translations.ja = {
   builder_title: "HTML と CSS を書いて結果をプレビューしましょう。",
   preview_label: "プレビュー",
   training_kicker: "トレーニング",
+  training_login_label: "ログイン",
   training_name_label: "名前",
   training_name_error: "まず名前を入力してください。",
   training_avatar_button: "アバターを選ぶ",
-  training_start_button: "次へ",
+  training_start_button: "入る",
   training_banner_kicker: "コースメニュー",
   training_banner_text: "コースメニューからレッスンを開き、順番に進めてください。",
   training_welcome: "ようこそ、{name}",
@@ -749,7 +994,7 @@ translations.ja = {
   training_locked: "ロック中",
   training_open: "開く",
   training_contents_kicker: "内容",
-  training_topic_preview_title: "コースメニューからレッスンを選んでください",
+  training_topic_preview_title: "レッスンを選んでください",
   training_back_to_menu: "メニューに戻る",
   training_edit: "編集",
   training_save: "保存",
@@ -771,7 +1016,7 @@ translations.zh = {
   menu_home: "主页",
   menu_console: "控制台",
   menu_training: "训练",
-  style_button: "样式",
+  style_button: "设置",
   theme_blue: "蓝色",
   theme_violet: "紫色",
   theme_green: "绿色",
@@ -787,7 +1032,7 @@ translations.zh = {
   lang_chinese: "中文",
   lang_korean: "韩语",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "面向未来开发者的互动学习环境。",
+  hero_title: "面向未来开发者的专业工作室。",
   hero_text: "通过结构化课程、实时编码练习、sandbox 实验、布局构建和 CSS 探索来学习编程。",
   card_console_button: "打开控制台",
   card_builder_title: "HTML / CSS 构建器",
@@ -799,10 +1044,11 @@ translations.zh = {
   builder_title: "使用 HTML 和 CSS 构建并预览结果。",
   preview_label: "预览",
   training_kicker: "训练",
+  training_login_label: "登录",
   training_name_label: "你的名字",
   training_name_error: "请先输入名字。",
   training_avatar_button: "选择头像",
-  training_start_button: "下一步",
+  training_start_button: "进入",
   training_banner_kicker: "课程菜单",
   training_banner_text: "从课程菜单中打开课程并逐步学习。",
   training_welcome: "欢迎，{name}",
@@ -811,7 +1057,7 @@ translations.zh = {
   training_locked: "已锁定",
   training_open: "打开",
   training_contents_kicker: "目录",
-  training_topic_preview_title: "请从课程菜单中选择一课",
+  training_topic_preview_title: "请选择一课",
   training_back_to_menu: "返回菜单",
   training_edit: "编辑",
   training_save: "保存",
@@ -833,7 +1079,7 @@ translations.ko = {
   menu_home: "홈",
   menu_console: "콘솔",
   menu_training: "트레이닝",
-  style_button: "스타일",
+  style_button: "설정",
   theme_blue: "파랑",
   theme_violet: "보라",
   theme_green: "초록",
@@ -849,7 +1095,7 @@ translations.ko = {
   lang_chinese: "중국어",
   lang_korean: "한국어",
   hero_kicker: "JavaScript Learning Studio",
-  hero_title: "미래 개발자를 위한 인터랙티브 학습 환경.",
+  hero_title: "미래 개발자를 위한 전문 스튜디오.",
   hero_text: "구조화된 수업, 실시간 코딩 연습, sandbox 실험, 레이아웃 제작, CSS 학습으로 프로그래밍을 배워보세요.",
   card_console_button: "콘솔 열기",
   card_builder_title: "HTML / CSS 빌더",
@@ -861,10 +1107,11 @@ translations.ko = {
   builder_title: "HTML과 CSS로 만들고 결과를 미리 보기하세요.",
   preview_label: "미리보기",
   training_kicker: "트레이닝",
+  training_login_label: "로그인",
   training_name_label: "이름",
   training_name_error: "먼저 이름을 입력하세요.",
   training_avatar_button: "아바타 선택",
-  training_start_button: "다음",
+  training_start_button: "입장",
   training_banner_kicker: "코스 메뉴",
   training_banner_text: "코스 메뉴에서 레슨을 열고 단계별로 진행하세요.",
   training_welcome: "환영합니다, {name}",
@@ -873,7 +1120,7 @@ translations.ko = {
   training_locked: "잠김",
   training_open: "열기",
   training_contents_kicker: "목차",
-  training_topic_preview_title: "코스 메뉴에서 레슨을 선택하세요",
+  training_topic_preview_title: "레슨을 선택하세요",
   training_back_to_menu: "메뉴로 돌아가기",
   training_edit: "편집",
   training_save: "저장",
@@ -890,32 +1137,32 @@ translations.ko = {
 };
 
 Object.assign(translations.uk, {
-  hero_title: "Професійна студія для майбутніх developers.",
+  hero_title: "Професійна студія для майбутніх розробників.",
   hero_text: "Структуровані уроки, практика коду та продумані інструменти, які допомагають новачкам створити сильну базу й упевнено увійти в development.",
 });
 
 Object.assign(translations.es, {
-  hero_title: "Un estudio profesional para futuros developers.",
+  hero_title: "Un estudio profesional para futuros desarrolladores.",
   hero_text: "Lecciones estructuradas, práctica de código y herramientas bien pensadas para ayudar a principiantes a construir una base sólida y entrar con confianza en development.",
 });
 
 Object.assign(translations.fr, {
-  hero_title: "Un studio professionnel pour les futurs developers.",
+  hero_title: "Un studio professionnel pour les futurs développeurs.",
   hero_text: "Des leçons structurées, de la pratique de code et des outils bien pensés pour aider les débutants à construire une base solide et entrer avec confiance dans le development.",
 });
 
 Object.assign(translations.ja, {
-  hero_title: "未来の developers のためのプロフェッショナルなスタジオ。",
+  hero_title: "未来の開発者のためのプロフェッショナルスタジオ。",
   hero_text: "構造化されたレッスン、コード練習、そして考え抜かれたツールで、初心者が強い基礎を作り、自信を持って development に進めるようにします。",
 });
 
 Object.assign(translations.zh, {
-  hero_title: "面向未来 developers 的专业工作室。",
+  hero_title: "面向未来开发者的专业工作室。",
   hero_text: "结构化课程、代码练习和精心设计的工具，帮助初学者建立扎实基础，并更自信地进入 development。",
 });
 
 Object.assign(translations.ko, {
-  hero_title: "미래 developers 를 위한 프로페셔널 스튜디오.",
+  hero_title: "미래 개발자를 위한 전문 스튜디오.",
   hero_text: "구조화된 수업, 코드 연습, 그리고 잘 설계된 도구로 초보자가 탄탄한 기초를 만들고 자신 있게 development 로 나아갈 수 있도록 돕습니다.",
 });
 
@@ -1007,6 +1254,7 @@ const i18nAriaNodes = document.querySelectorAll("[data-i18n-aria-label]");
 const themeToggle = document.getElementById("theme-toggle");
 const themeMenu = document.getElementById("theme-menu");
 const languageToggle = document.getElementById("language-toggle");
+const languageCurrentLabel = document.getElementById("language-current-label");
 const languageMenu = document.getElementById("language-menu");
 const themeItems = document.querySelectorAll("[data-theme-value]");
 const languageItems = document.querySelectorAll("[data-language-value]");
@@ -1014,10 +1262,22 @@ const topbarProfile = document.getElementById("topbar-profile");
 const topbarProfileAvatar = document.getElementById("topbar-profile-avatar");
 const topbarProfileName = document.getElementById("topbar-profile-name");
 
+const languageShortLabels = {
+  en: "ENG",
+  es: "ESP",
+  uk: "УКР",
+  ru: "РУС",
+  fr: "FRA",
+  ja: "日本",
+  zh: "中文",
+  ko: "한국",
+};
+
 const consoleInput = document.getElementById("console-input");
 const consoleHighlight = document.getElementById("console-highlight");
 const consoleLineNumbers = document.getElementById("console-line-numbers");
 const consoleOutput = document.getElementById("console-output");
+const consoleUndoButton = document.getElementById("console-undo-btn");
 const consoleClearButton = document.getElementById("console-clear-btn");
 const consoleRunButton = document.getElementById("console-run-btn");
 const consoleResetButton = document.getElementById("console-reset-btn");
@@ -1034,6 +1294,7 @@ const cssHighlight = document.getElementById("css-highlight");
 const cssLineNumbers = document.getElementById("css-line-numbers");
 const cssUndoButton = document.getElementById("css-undo-btn");
 const cssResetButton = document.getElementById("css-reset-btn");
+const builderResetButton = document.getElementById("builder-reset-btn");
 const builderRunButton = document.getElementById("builder-run-btn");
 const previewFrame = document.getElementById("preview-frame");
 
@@ -1046,6 +1307,7 @@ const trainingStartButton = document.getElementById("training-start-btn");
 const trainingAvatarOpenButton = document.getElementById("training-avatar-open-btn");
 const trainingAvatarGrid = document.getElementById("training-avatar-grid");
 const trainingWelcomeTitle = document.getElementById("training-welcome-title");
+const trainingContentsLabel = document.getElementById("training-contents-label");
 const avatarModal = document.getElementById("avatar-modal");
 const avatarModalClose = document.getElementById("avatar-modal-close");
 const avatarModalCloseButton = document.getElementById("avatar-modal-close-btn");
@@ -1074,7 +1336,9 @@ const trainingEditButton = document.getElementById("training-edit-btn");
 const trainingSaveButton = document.getElementById("training-save-btn");
 const trainingLessonEditor = document.getElementById("training-lesson-editor");
 const trainingEditorTools = document.getElementById("training-editor-tools");
+const trainingTextColorControl = document.getElementById("training-text-color-control");
 const trainingTextColor = document.getElementById("training-text-color");
+const trainingHighlightColorControl = document.getElementById("training-highlight-color-control");
 const trainingHighlightColor = document.getElementById("training-highlight-color");
 const trainingFormatBlock = document.getElementById("training-format-block");
 const trainingFontFamily = document.getElementById("training-font-family");
@@ -1086,16 +1350,39 @@ const trainingClearEditorButton = document.getElementById("training-clear-editor
 const trainingInsertImageButton = document.getElementById("training-insert-image-btn");
 const trainingImageUpload = document.getElementById("training-image-upload");
 const trainingInsertCodeButton = document.getElementById("training-insert-code-btn");
+const trainingInsertLinkButton = document.getElementById("training-insert-link-btn");
 const trainingAdminActions = document.getElementById("training-admin-actions");
 const trainingAddUnitButton = document.getElementById("training-add-unit-btn");
 const trainingAddLessonButton = document.getElementById("training-add-lesson-btn");
+const trainingMenuEditor = document.getElementById("training-menu-editor");
+const trainingMenuEditorLabel = document.getElementById("training-menu-editor-label");
+const trainingMenuEditorCancelButton = document.getElementById("training-menu-editor-cancel-btn");
+const trainingMenuEditorSaveButton = document.getElementById("training-menu-editor-save-btn");
+const trainingMenuTitleInput = document.getElementById("training-menu-title-input");
+const trainingMenuSectionInput = document.getElementById("training-menu-section-input");
+const trainingMenuFontFamily = document.getElementById("training-menu-font-family");
+const trainingMenuFontSize = document.getElementById("training-menu-font-size");
+const trainingMenuColorControl = document.getElementById("training-menu-color-control");
+const trainingMenuColor = document.getElementById("training-menu-color");
+const trainingMenuColorSwatches = document.getElementById("training-menu-color-swatches");
+const trainingMenuPreview = document.getElementById("training-menu-editor-preview");
 
 let currentLanguage = "en";
 let isDraggingConsoleDivider = false;
+let previousConsoleValue = consoleDefaultCode;
 let previousHtmlValue = builderDefaultHtml;
 let previousCssValue = builderDefaultCss;
 let savedEditorRange = null;
 let shouldCapitalizeNextEditorInput = false;
+let trainingMenuEditorContext = null;
+const trainingUiStorageKey = "javascript-playground-training-ui";
+const trainingUiState = {};
+
+const defaultTrainingMenuStyle = {
+  fontFamily: "'Source Code Pro', monospace",
+  fontSize: "1.25rem",
+  color: "#dff4ff",
+};
 
 const helperSettings = {
   apiKeyStorageKey: "javascript-playground-helper-api-key",
@@ -1152,15 +1439,43 @@ languageItems.forEach((button) => {
 });
 
 consoleRunButton.addEventListener("click", runConsoleCode);
-consoleClearButton.addEventListener("click", () => {
-  consoleInput.value = "";
+
+consoleInput.addEventListener("focus", () => {
+  previousConsoleValue = consoleInput.value;
+});
+
+consoleUndoButton.addEventListener("click", () => {
+  const currentValue = consoleInput.value;
+  consoleInput.value = previousConsoleValue;
+  previousConsoleValue = currentValue;
   updateCodeEditor(consoleInput, consoleHighlight, consoleLineNumbers, highlightJavaScript);
   consoleInput.focus();
 });
-consoleResetButton.addEventListener("click", () => {
-  consoleInput.value = consoleDefaultCode;
+
+consoleClearButton.addEventListener("click", () => {
+  previousConsoleValue = consoleInput.value;
+  consoleInput.value = "";
+  consoleOutput.innerHTML = "";
   updateCodeEditor(consoleInput, consoleHighlight, consoleLineNumbers, highlightJavaScript);
-  runConsoleCode();
+  consoleInput.focus();
+});
+
+consoleResetButton.addEventListener("click", () => {
+  previousConsoleValue = consoleInput.value;
+  consoleInput.value = "";
+  consoleOutput.innerHTML = "";
+  updateCodeEditor(consoleInput, consoleHighlight, consoleLineNumbers, highlightJavaScript);
+  consoleInput.focus();
+});
+
+builderResetButton.addEventListener("click", () => {
+  previousHtmlValue = htmlInput.value;
+  previousCssValue = cssInput.value;
+  htmlInput.value = "";
+  cssInput.value = "";
+  updateCodeEditor(htmlInput, htmlHighlight, htmlLineNumbers, highlightHtml);
+  updateCodeEditor(cssInput, cssHighlight, cssLineNumbers, highlightCss);
+  renderPreview();
 });
 
 builderRunButton.addEventListener("click", renderPreview);
@@ -1320,6 +1635,7 @@ trainingTextColor.addEventListener("input", () => {
 trainingHighlightColor.addEventListener("input", () => {
   applyEditorColor("hiliteColor", trainingHighlightColor.value);
 });
+trainingInsertLinkButton.addEventListener("click", insertEditorLink);
 trainingFormatBlock.addEventListener("change", () => {
   applyBlockFormat(trainingFormatBlock.value);
 });
@@ -1355,6 +1671,26 @@ trainingImageUpload.addEventListener("change", insertUploadedImage);
 trainingInsertCodeButton.addEventListener("click", insertCodeBlock);
 trainingAddUnitButton.addEventListener("click", addTrainingUnit);
 trainingAddLessonButton.addEventListener("click", addTrainingLesson);
+trainingMenuEditorCancelButton?.addEventListener("click", closeTrainingMenuEditor);
+trainingMenuEditorSaveButton?.addEventListener("click", saveTrainingMenuEditor);
+trainingMenuTitleInput?.addEventListener("input", syncTrainingMenuEditorPreview);
+trainingMenuSectionInput?.addEventListener("input", syncTrainingMenuEditorPreview);
+trainingMenuFontFamily?.addEventListener("change", syncTrainingMenuEditorPreview);
+trainingMenuFontSize?.addEventListener("change", syncTrainingMenuEditorPreview);
+trainingMenuColor?.addEventListener("input", syncTrainingMenuEditorPreview);
+trainingContentsLabel?.addEventListener("click", () => {
+  if (!IS_DEVELOPER) {
+    return;
+  }
+
+  openTrainingMenuEditor({
+    mode: "edit-contents",
+    kind: "divider",
+    label: "Edit contents",
+    initialTitle: getTrainingContentsText(),
+    initialStyle: getTrainingContentsStyle(),
+  });
+});
 
 attachEditor(consoleInput, consoleHighlight, consoleLineNumbers, highlightJavaScript);
 attachEditor(htmlInput, htmlHighlight, htmlLineNumbers, highlightHtml);
@@ -1417,6 +1753,10 @@ function applyLanguage(languageCode) {
     node.setAttribute("aria-label", getText(node.dataset.i18nAriaLabel));
   });
 
+  if (languageCurrentLabel) {
+    languageCurrentLabel.textContent = languageShortLabels[languageCode] || "ENG";
+  }
+
   renderTopbarProfile();
   renderTraining();
 }
@@ -1458,7 +1798,12 @@ function runConsoleCode() {
   }
 
   const execution = executeCode(source);
-  renderConsoleOutput(execution.ok ? execution.logs.length ? execution.logs : ["Done"] : [execution.error.message]);
+  if (execution.ok) {
+    renderConsoleOutput(execution.logs.length ? execution.logs : [[{ type: "success", text: "Done" }]]);
+    return;
+  }
+
+  renderConsoleOutput([[{ type: "error", text: execution.error.message }]]);
 }
 
 function executeCode(source) {
@@ -1466,7 +1811,7 @@ function executeCode(source) {
     const logs = [];
     const captureConsole = {
       log: (...args) => {
-        logs.push(args.map(String).join(" "));
+        logs.push(args.map(serializeConsoleValue));
       },
     };
 
@@ -1497,13 +1842,50 @@ function runTaskWithReturn(source, returnStatement) {
 
 function renderConsoleOutput(lines) {
   consoleOutput.innerHTML = lines
-    .map(
-      (line) =>
-        `<span class="terminal-line"><span class="terminal-prompt">&gt;</span> <span class="terminal-text">${escapeHtml(
-          line,
-        )}</span></span>`,
-    )
+    .map((line) => {
+      const parts = Array.isArray(line) ? line : [serializeConsoleValue(line)];
+      return `<span class="terminal-line"><span class="terminal-prompt">&gt;</span><span class="terminal-parts">${parts
+        .map(renderConsolePart)
+        .join('<span class="terminal-gap"> </span>')}</span></span>`;
+    })
     .join("");
+}
+
+function serializeConsoleValue(value) {
+  if (value === null) {
+    return { type: "keyword", text: "null" };
+  }
+
+  if (value === undefined) {
+    return { type: "keyword", text: "undefined" };
+  }
+
+  const valueType = typeof value;
+  if (valueType === "number") {
+    return { type: "number", text: String(value) };
+  }
+  if (valueType === "boolean") {
+    return { type: "keyword", text: String(value) };
+  }
+  if (valueType === "string") {
+    return { type: "string", text: value };
+  }
+  if (valueType === "function") {
+    return { type: "function", text: value.name ? `[Function ${value.name}]` : "[Function]" };
+  }
+
+  try {
+    return { type: "object", text: JSON.stringify(value, null, 2) };
+  } catch (error) {
+    return { type: "object", text: String(value) };
+  }
+}
+
+function renderConsolePart(part) {
+  const value = part && typeof part === "object" ? part : { type: "string", text: String(part) };
+  const safeText = escapeHtml(value.text ?? "");
+  const className = `terminal-value terminal-value-${value.type || "string"}`;
+  return `<span class="${className}">${safeText}</span>`;
 }
 
 function renderPreview() {
@@ -1547,7 +1929,9 @@ function renderTraining() {
   trainingAdminActions.classList.toggle("is-hidden", !IS_DEVELOPER);
   trainingWelcomeTitle.textContent = trainingState.name
     ? getText("training_welcome", { name: trainingState.name })
-    : getText("training_topic_preview_title");
+    : "";
+  trainingWelcomeTitle.classList.toggle("is-hidden", !trainingState.name);
+  renderTrainingContentsLabel();
 
   renderTrainingTopics();
 
@@ -1561,6 +1945,275 @@ function renderTraining() {
   }
 }
 
+function hydrateTrainingUiState() {
+  try {
+    const saved = window.localStorage.getItem(trainingUiStorageKey);
+    if (!saved) {
+      return;
+    }
+
+    const parsed = JSON.parse(saved);
+    if (parsed && typeof parsed === "object") {
+      Object.assign(trainingUiState, parsed);
+    }
+  } catch (error) {
+    console.warn("Could not load training UI state", error);
+  }
+}
+
+function persistTrainingUiState() {
+  try {
+    window.localStorage.setItem(trainingUiStorageKey, JSON.stringify(trainingUiState));
+  } catch (error) {
+    console.warn("Could not save training UI state", error);
+  }
+}
+
+function getTrainingUiLanguageState(language = currentLanguage) {
+  if (!trainingUiState[language] || typeof trainingUiState[language] !== "object") {
+    trainingUiState[language] = {};
+  }
+
+  return trainingUiState[language];
+}
+
+function getTrainingContentsConfig(language = currentLanguage) {
+  return getTrainingUiLanguageState(language).contents || null;
+}
+
+function getTrainingContentsText(language = currentLanguage) {
+  return getTrainingContentsConfig(language)?.title || getText("training_contents_kicker");
+}
+
+function getTrainingContentsStyle(language = currentLanguage) {
+  return { ...defaultTrainingMenuStyle, ...(getTrainingContentsConfig(language)?.menuStyle || {}) };
+}
+
+function renderTrainingContentsLabel() {
+  if (!trainingContentsLabel) {
+    return;
+  }
+
+  trainingContentsLabel.textContent = getTrainingContentsText();
+  const style = getTrainingContentsStyle();
+  trainingContentsLabel.style.fontFamily = style.fontFamily;
+  trainingContentsLabel.style.fontSize = style.fontSize;
+  trainingContentsLabel.style.color = style.color;
+  trainingContentsLabel.classList.toggle("is-editable", IS_DEVELOPER);
+}
+
+function getTrainingMenuStyle(item) {
+  return { ...defaultTrainingMenuStyle, ...(item?.menuStyle || {}) };
+}
+
+function getTrainingMenuStyleText(item) {
+  const style = getTrainingMenuStyle(item);
+  const declarations = [];
+
+  if (style.fontFamily) {
+    declarations.push(`font-family:${style.fontFamily}`);
+  }
+
+  if (style.fontSize) {
+    declarations.push(`font-size:${style.fontSize}`);
+  }
+
+  if (style.color) {
+    declarations.push(`color:${style.color}`);
+  }
+
+  return declarations.join(';');
+}
+
+function getTrainingMenuStyleAttribute(item) {
+  const styleText = getTrainingMenuStyleText(item);
+  return styleText ? ` style="${escapeAttribute(styleText)}"` : "";
+}
+
+function getTrainingMenuEditorStyle() {
+  return {
+    fontFamily: trainingMenuFontFamily.value || defaultTrainingMenuStyle.fontFamily,
+    fontSize: trainingMenuFontSize.value || defaultTrainingMenuStyle.fontSize,
+    color: trainingMenuColor.value || defaultTrainingMenuStyle.color,
+  };
+}
+
+function applyTrainingMenuEditorStyle(style = getTrainingMenuEditorStyle()) {
+  const elements = [trainingMenuTitleInput, trainingMenuSectionInput, trainingMenuPreview].filter(Boolean);
+  elements.forEach((element) => {
+    element.style.fontFamily = style.fontFamily;
+    element.style.fontSize = style.fontSize;
+    element.style.color = style.color;
+  });
+
+  if (trainingMenuColorControl) {
+    trainingMenuColorControl.style.setProperty('--swatch-color', style.color);
+  }
+}
+
+function syncTrainingMenuEditorPreview() {
+  if (!trainingMenuPreview) {
+    return;
+  }
+
+  trainingMenuPreview.textContent = trainingMenuTitleInput.value.trim() || "Preview";
+  applyTrainingMenuEditorStyle();
+}
+
+function resetTrainingMenuEditorInputs(kind, item = null) {
+  const style = getTrainingMenuStyle(item);
+  const normalizedFontFamily = normalizeFontFamily(style.fontFamily);
+  const normalizedFontSize = normalizeFontSize(style.fontSize);
+
+  trainingMenuTitleInput.value = item ? getDisplayTitle(item) : "";
+  trainingMenuSectionInput.value = item && kind === "lesson" ? getDisplaySection(item) : "";
+  trainingMenuSectionInput.classList.toggle("is-hidden", kind !== "lesson");
+
+  setSelectToMatchingValue(trainingMenuFontFamily, normalizedFontFamily, (optionValue) =>
+    normalizeFontFamily(optionValue) === normalizedFontFamily
+  );
+  setSelectToMatchingValue(trainingMenuFontSize, normalizedFontSize, (optionValue) =>
+    normalizeFontSize(optionValue) === normalizedFontSize
+  );
+
+  if (!trainingMenuFontFamily.value) {
+    trainingMenuFontFamily.value = defaultTrainingMenuStyle.fontFamily;
+  }
+
+  if (!trainingMenuFontSize.value) {
+    trainingMenuFontSize.value = defaultTrainingMenuStyle.fontSize;
+  }
+
+  trainingMenuColor.value = style.color || defaultTrainingMenuStyle.color;
+  syncTrainingMenuEditorPreview();
+}
+
+function openTrainingMenuEditor(context) {
+  if (!IS_DEVELOPER || !trainingMenuEditor) {
+    return;
+  }
+
+  trainingMenuEditorContext = context;
+  const item = context.itemId
+    ? getCourseItems().find((entry) => entry.id === context.itemId && entry.kind === context.kind)
+    : {
+        kind: context.kind,
+        title: context.initialTitle || "",
+        section: context.initialSection || "",
+        menuStyle: context.initialStyle || defaultTrainingMenuStyle,
+        customTitle: true,
+        customSection: true,
+      };
+
+  trainingMenuEditorLabel.textContent = context.label;
+  trainingMenuEditor.classList.remove("is-hidden");
+  resetTrainingMenuEditorInputs(context.kind, item);
+
+  if (context.mode === "edit-contents") {
+    trainingMenuSectionInput.classList.add("is-hidden");
+  } else if (!context.itemId && context.kind === "lesson") {
+    trainingMenuSectionInput.value = context.mode === "insert-lesson"
+      ? getSectionForInsert(getCourseItems(), context.anchorId, context.anchorKind)
+      : getCurrentSectionName();
+  }
+
+  syncTrainingMenuEditorPreview();
+  trainingMenuTitleInput.focus();
+  trainingMenuTitleInput.select();
+}
+
+function closeTrainingMenuEditor() {
+  trainingMenuEditorContext = null;
+  trainingMenuEditor?.classList.add("is-hidden");
+}
+
+function saveTrainingMenuEditor() {
+  if (!IS_DEVELOPER || !trainingMenuEditorContext) {
+    return;
+  }
+
+  const title = trainingMenuTitleInput.value.trim();
+  if (!title) {
+    trainingMenuTitleInput.focus();
+    return;
+  }
+
+  const style = getTrainingMenuEditorStyle();
+  const items = getCourseItems();
+
+  if (trainingMenuEditorContext.mode === "edit") {
+    const item = items.find((entry) => entry.id === trainingMenuEditorContext.itemId && entry.kind === trainingMenuEditorContext.kind);
+    if (!item) {
+      closeTrainingMenuEditor();
+      return;
+    }
+
+    item.title = title;
+    item.customTitle = true;
+    item.menuStyle = style;
+
+    if (item.kind === "lesson") {
+      item.section = trainingMenuSectionInput.value.trim();
+      item.customSection = true;
+    }
+  }
+
+  if (trainingMenuEditorContext.mode === "edit-contents") {
+    getTrainingUiLanguageState().contents = {
+      title,
+      menuStyle: style,
+    };
+    persistTrainingUiState();
+  }
+
+  if (trainingMenuEditorContext.mode === "create-unit") {
+    items.push({
+      id: `unit-${Date.now()}`,
+      kind: "divider",
+      title,
+      customTitle: true,
+      menuStyle: style,
+    });
+  }
+
+  if (trainingMenuEditorContext.mode === "create-lesson") {
+    const lessonId = `lesson-${Date.now()}`;
+    items.push({
+      id: lessonId,
+      kind: "lesson",
+      title,
+      section: trainingMenuSectionInput.value.trim(),
+      content: [],
+      html: "",
+      customTitle: true,
+      customSection: true,
+      menuStyle: style,
+    });
+  }
+
+  if (trainingMenuEditorContext.mode === "insert-lesson") {
+    const lessonId = `lesson-${Date.now()}`;
+    const insertIndex = getInsertIndexForLesson(items, trainingMenuEditorContext.anchorId, trainingMenuEditorContext.anchorKind);
+    const section = trainingMenuSectionInput.value.trim() || getSectionForInsert(items, trainingMenuEditorContext.anchorId, trainingMenuEditorContext.anchorKind);
+    items.splice(insertIndex, 0, {
+      id: lessonId,
+      kind: "lesson",
+      title,
+      section,
+      content: [],
+      html: "",
+      customTitle: true,
+      customSection: true,
+      menuStyle: style,
+    });
+    trainingState.selectedLessonId = lessonId;
+  }
+
+  persistCourseContent();
+  closeTrainingMenuEditor();
+  renderTraining();
+}
+
 function renderTrainingTopics() {
   const lessons = getLessonItems();
   const items = getCourseItems();
@@ -1571,7 +2224,7 @@ function renderTrainingTopics() {
         return `<div class="training-menu-row training-menu-row-divider ${IS_DEVELOPER ? "training-unit-draggable" : ""}" ${
           IS_DEVELOPER ? `draggable="true" data-unit-block="${item.id}"` : ""
         }>
-          <div class="training-lesson-divider">${escapeHtml(getDisplayTitle(item))}</div>
+          <div class="training-lesson-divider"${getTrainingMenuStyleAttribute(item)}>${escapeHtml(getDisplayTitle(item))}</div>
           ${
             IS_DEVELOPER
               ? `<div class="training-row-actions">
@@ -1596,7 +2249,7 @@ function renderTrainingTopics() {
           unlocked ? "" : "disabled"
         }>
           <span class="training-lesson-copy">
-            <strong>${escapeHtml(getDisplayTitle(item))}</strong>
+            <strong${getTrainingMenuStyleAttribute(item)}>${escapeHtml(getDisplayTitle(item))}</strong>
             <small>${escapeHtml(unlocked ? getText("training_open") : getText("training_locked"))}</small>
           </span>
         </button>
@@ -1664,7 +2317,10 @@ function renderTrainingTopics() {
       row.addEventListener("dragstart", handleLessonDragStart);
       row.addEventListener("dragover", handleLessonDragOver);
       row.addEventListener("drop", handleLessonDrop);
-      row.addEventListener("dragend", clearDraggedLessonState);
+      row.addEventListener("dragend", () => {
+        clearDraggedLessonState();
+        clearDraggedUnitState();
+      });
       row.addEventListener("dragleave", handleLessonDragLeave);
     });
   }
@@ -1795,29 +2451,12 @@ function editCourseItem(itemId, kind) {
     return;
   }
 
-  const item = getCourseItems().find((entry) => entry.id === itemId && entry.kind === kind);
-  if (!item) {
-    return;
-  }
-
-  const nextTitle = window.prompt(kind === "divider" ? "Unit name" : "Lesson name", getDisplayTitle(item));
-  if (!nextTitle || !nextTitle.trim()) {
-    return;
-  }
-
-  item.title = nextTitle.trim();
-  item.customTitle = true;
-
-  if (kind === "lesson") {
-    const nextSection = window.prompt("Section", getDisplaySection(item));
-    if (nextSection !== null) {
-      item.section = nextSection.trim();
-      item.customSection = true;
-    }
-  }
-
-  persistCourseContent();
-  renderTraining();
+  openTrainingMenuEditor({
+    mode: "edit",
+    kind,
+    itemId,
+    label: kind === "divider" ? "Edit unit" : "Edit lesson",
+  });
 }
 
 function deleteCourseItem(itemId, kind) {
@@ -1887,6 +2526,7 @@ function handleUnitDrop(event) {
   const targetUnitId = event.currentTarget.dataset.unitBlock;
   const sourceUnitId = trainingState.draggedUnitId;
   const sourceLessonId = trainingState.draggedLessonId;
+  const dropAfter = isDropAfter(event.currentTarget, event.clientY);
 
   if (sourceLessonId) {
     clearDraggedLessonState();
@@ -1904,11 +2544,11 @@ function handleUnitDrop(event) {
     return;
   }
 
-  moveUnitBlock(sourceUnitId, targetUnitId);
+  moveUnitBlock(sourceUnitId, targetUnitId, dropAfter ? "after" : "before");
 }
 
 function clearDraggedUnitState() {
-  trainingTopics.querySelectorAll(".training-unit-draggable").forEach((row) => {
+  trainingTopics.querySelectorAll(".training-unit-draggable, .training-lesson-draggable").forEach((row) => {
     row.classList.remove("is-dragging", "is-drop-target");
   });
   trainingState.draggedUnitId = null;
@@ -1929,7 +2569,7 @@ function handleLessonDragStart(event) {
 }
 
 function handleLessonDragOver(event) {
-  if (!trainingState.draggedLessonId) {
+  if (!trainingState.draggedLessonId && !trainingState.draggedUnitId) {
     return;
   }
 
@@ -1948,7 +2588,18 @@ function handleLessonDrop(event) {
   event.preventDefault();
   const targetLessonId = event.currentTarget.dataset.lessonBlock;
   const sourceLessonId = trainingState.draggedLessonId;
+  const sourceUnitId = trainingState.draggedUnitId;
   const dropAfter = isDropAfter(event.currentTarget, event.clientY);
+
+  if (sourceUnitId) {
+    clearDraggedUnitState();
+    event.currentTarget.classList.remove("is-drop-target");
+    if (!targetLessonId) {
+      return;
+    }
+    moveUnitNearLesson(sourceUnitId, targetLessonId, dropAfter ? "after" : "before");
+    return;
+  }
 
   clearDraggedLessonState();
 
@@ -1960,13 +2611,13 @@ function handleLessonDrop(event) {
 }
 
 function clearDraggedLessonState() {
-  trainingTopics.querySelectorAll(".training-lesson-draggable").forEach((row) => {
+  trainingTopics.querySelectorAll(".training-lesson-draggable, .training-unit-draggable").forEach((row) => {
     row.classList.remove("is-dragging", "is-drop-target");
   });
   trainingState.draggedLessonId = null;
 }
 
-function moveUnitBlock(sourceUnitId, targetUnitId) {
+function moveUnitBlock(sourceUnitId, targetUnitId, position = "before") {
   const items = getCourseItems();
   const sourceRange = getUnitBlockRange(items, sourceUnitId);
   const targetRange = getUnitBlockRange(items, targetUnitId);
@@ -1976,7 +2627,7 @@ function moveUnitBlock(sourceUnitId, targetUnitId) {
   }
 
   const sourceBlock = items.splice(sourceRange.start, sourceRange.end - sourceRange.start + 1);
-  let insertIndex = targetRange.start;
+  let insertIndex = position === "after" ? targetRange.end + 1 : targetRange.start;
 
   if (sourceRange.start < targetRange.start) {
     insertIndex -= sourceBlock.length;
@@ -2040,6 +2691,31 @@ function moveLessonToUnit(sourceLessonId, targetUnitId) {
     }
   }
 
+  persistCourseContent();
+  renderTraining();
+}
+
+function moveUnitNearLesson(sourceUnitId, targetLessonId, position = "before") {
+  const items = getCourseItems();
+  const sourceRange = getUnitBlockRange(items, sourceUnitId);
+  const targetIndex = items.findIndex((item) => item.id === targetLessonId && item.kind === "lesson");
+
+  if (!sourceRange || targetIndex === -1) {
+    return;
+  }
+
+  if (targetIndex >= sourceRange.start && targetIndex <= sourceRange.end) {
+    return;
+  }
+
+  const sourceBlock = items.splice(sourceRange.start, sourceRange.end - sourceRange.start + 1);
+  let insertIndex = targetIndex + (position === "after" ? 1 : 0);
+
+  if (sourceRange.start < targetIndex) {
+    insertIndex -= sourceBlock.length;
+  }
+
+  items.splice(insertIndex, 0, ...sourceBlock);
   persistCourseContent();
   renderTraining();
 }
@@ -2115,9 +2791,19 @@ function ensureCourseLanguages() {
 }
 
 function handleEditorTabKey(event) {
-  if (event.key === "Enter" && !event.shiftKey && isCaretInsideCodeBlock()) {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "a") {
     event.preventDefault();
-    exitCodeBlock();
+    selectEntireTrainingEditor();
+    return;
+  }
+
+  if (event.key === "Enter" && isCaretInsideCodeBlock()) {
+    event.preventDefault();
+    if (event.metaKey || event.ctrlKey) {
+      exitCodeBlock();
+    } else {
+      insertCodeLineBreak();
+    }
     return;
   }
 
@@ -2131,6 +2817,20 @@ function handleEditorTabKey(event) {
 
   event.preventDefault();
   document.execCommand("insertHTML", false, "&nbsp;&nbsp;&nbsp;&nbsp;");
+}
+
+function selectEntireTrainingEditor() {
+  const selection = window.getSelection();
+  if (!selection) {
+    return;
+  }
+
+  const range = document.createRange();
+  range.selectNodeContents(trainingLessonEditor);
+  selection.removeAllRanges();
+  selection.addRange(range);
+  savedEditorRange = range.cloneRange();
+  syncEditorToolbarState();
 }
 
 function isCaretInsideCodeBlock() {
@@ -2153,6 +2853,26 @@ function getActiveCodeBlock(node) {
   }
 
   return null;
+}
+
+function insertCodeLineBreak() {
+  const selection = window.getSelection();
+  if (!selection || selection.rangeCount === 0) {
+    return;
+  }
+
+  const range = selection.getRangeAt(0);
+  range.deleteContents();
+
+  const lineBreak = document.createTextNode("\n");
+  range.insertNode(lineBreak);
+
+  const nextRange = document.createRange();
+  nextRange.setStart(lineBreak, 1);
+  nextRange.collapse(true);
+  selection.removeAllRanges();
+  selection.addRange(nextRange);
+  savedEditorRange = nextRange.cloneRange();
 }
 
 function exitCodeBlock() {
@@ -2207,6 +2927,7 @@ function handleEditorClick(event) {
 
 function handleEditorInput() {
   autoCapitalizeEditorText();
+  refreshEditableCodeBlocks();
   handleEditorSelectionUpdate();
 }
 
@@ -2251,8 +2972,9 @@ function autoCapitalizeEditorText() {
 
 function normalizeEditorTypedText(text, capitalizeAtStart = false) {
   let normalized = text
-    .replace(/(^|[\s([{'"“‘-])i(?=\s+am\b)/g, (match, prefix) => `${prefix}I`)
-    .replace(/([.!?]\s+)([a-z])/g, (_, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
+    .replace(/\u00A0/g, " ")
+    .replace(/(^|[\s([{\'"“‘-])i(?=\s+am\b)/gi, (match, prefix) => `${prefix}I`)
+    .replace(/([.!?]\s+|\n\s*)([a-z])/g, (_, prefix, letter) => `${prefix}${letter.toUpperCase()}`);
 
   if (capitalizeAtStart) {
     normalized = normalized.replace(/^(\s*)([a-z])/, (_, spaces, letter) => `${spaces}${letter.toUpperCase()}`);
@@ -2284,8 +3006,8 @@ function isAtStartOfEditorBlock(textNode, offset) {
   const range = document.createRange();
   range.setStart(block, 0);
   range.setEnd(textNode, offset);
-  const textBeforeCaret = range.toString();
-  return textBeforeCaret.trim().length <= 1;
+  const textBeforeCaret = range.toString().replace(/\u00A0/g, " ");
+  return textBeforeCaret.replace(/\s/g, "").length <= 1;
 }
 
 function ensureEditableParagraph() {
@@ -2330,7 +3052,12 @@ function placeCaretInsideElement(element) {
   selection.addRange(range);
 }
 
+function isNodeInsideTrainingEditor(node) {
+  return Boolean(node && (node === trainingLessonEditor || trainingLessonEditor.contains(node)));
+}
+
 function saveEditorSelection() {
+  updateColorToolSwatches();
   const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0) {
     return;
@@ -2341,7 +3068,7 @@ function saveEditorSelection() {
     ? range.commonAncestorContainer.parentNode
     : range.commonAncestorContainer;
 
-  if (commonAncestor && trainingLessonEditor.contains(commonAncestor)) {
+  if (isNodeInsideTrainingEditor(commonAncestor)) {
     savedEditorRange = range.cloneRange();
   }
 }
@@ -2392,6 +3119,8 @@ function syncEditorToolbarState() {
   if (normalizedHighlight) {
     trainingHighlightColor.value = normalizedHighlight;
   }
+
+  updateColorToolSwatches();
 }
 
 function getSelectionStyleElement() {
@@ -2406,6 +3135,57 @@ function getSelectionStyleElement() {
   }
 
   return node instanceof HTMLElement ? node : null;
+}
+
+function updateColorToolSwatches() {
+  if (trainingTextColorControl) {
+    trainingTextColorControl.style.setProperty("--swatch-color", trainingTextColor.value);
+  }
+  if (trainingHighlightColorControl) {
+    trainingHighlightColorControl.style.setProperty("--swatch-color", trainingHighlightColor.value);
+  }
+}
+
+function insertEditorLink() {
+  restoreEditorSelection();
+  const url = window.prompt("Paste the link URL");
+  if (!url) {
+    return;
+  }
+
+  const safeUrl = url.trim();
+  if (!safeUrl) {
+    return;
+  }
+
+  const selection = window.getSelection();
+  const selectedText = selection ? selection.toString().trim() : "";
+  trainingLessonEditor.focus();
+
+  if (selectedText) {
+    document.execCommand("createLink", false, safeUrl);
+  } else {
+    document.execCommand(
+      "insertHTML",
+      false,
+      `<a href="${escapeAttribute(safeUrl)}" target="_blank" rel="noreferrer">${escapeHtml(safeUrl)}</a>`,
+    );
+  }
+
+  saveEditorSelection();
+}
+
+function refreshEditableCodeBlocks() {
+  const selection = window.getSelection();
+  const activeCodeBlock = selection ? getActiveCodeBlock(selection.anchorNode) : null;
+
+  trainingLessonEditor.querySelectorAll(".lesson-code-block code").forEach((codeBlock) => {
+    if (activeCodeBlock && activeCodeBlock.contains(codeBlock)) {
+      return;
+    }
+    const source = codeBlock.textContent || "";
+    codeBlock.innerHTML = highlightJavaScript(source);
+  });
 }
 
 function setSelectToMatchingValue(select, normalizedValue, matcher) {
@@ -2754,6 +3534,7 @@ function insertCodeBlock() {
     false,
     `<pre class="lesson-code-block"><code>${code}</code></pre><p></p>`,
   );
+  refreshEditableCodeBlocks();
 }
 
 function getEditorRange() {
@@ -2764,7 +3545,7 @@ function getEditorRange() {
       ? liveRange.commonAncestorContainer.parentNode
       : liveRange.commonAncestorContainer;
 
-    if (liveCommonAncestor && trainingLessonEditor.contains(liveCommonAncestor)) {
+    if (isNodeInsideTrainingEditor(liveCommonAncestor)) {
       savedEditorRange = liveRange.cloneRange();
       return liveRange;
     }
@@ -2784,11 +3565,61 @@ function getEditorRange() {
     ? range.commonAncestorContainer.parentNode
     : range.commonAncestorContainer;
 
-  if (!commonAncestor || !trainingLessonEditor.contains(commonAncestor)) {
+  if (!isNodeInsideTrainingEditor(commonAncestor)) {
     return null;
   }
 
   return range;
+}
+
+function getIntersectingEditorBlocks(range) {
+  return Array.from(trainingLessonEditor.querySelectorAll("p, li, blockquote, h2, h3, pre, .lesson-code-block"))
+    .filter((block) => {
+      try {
+        return range.intersectsNode(block);
+      } catch (error) {
+        return false;
+      }
+    });
+}
+
+function applyStylesToElementTree(root, styles) {
+  if (!(root instanceof HTMLElement)) {
+    return;
+  }
+
+  const keys = Object.keys(styles);
+  Object.assign(root.style, styles);
+
+  root.querySelectorAll("*").forEach((element) => {
+    if (!(element instanceof HTMLElement)) {
+      return;
+    }
+
+    if (element.closest(".lesson-code-block")) {
+      return;
+    }
+
+    keys.forEach((key) => {
+      element.style[key] = styles[key];
+    });
+  });
+}
+
+function restoreSpecificEditorRange(range) {
+  if (!range) {
+    return;
+  }
+
+  const selection = window.getSelection();
+  if (!selection) {
+    return;
+  }
+
+  trainingLessonEditor.focus();
+  selection.removeAllRanges();
+  selection.addRange(range);
+  savedEditorRange = range.cloneRange();
 }
 
 function applyInlineStyle(styles) {
@@ -2816,6 +3647,20 @@ function applyInlineStyle(styles) {
     return;
   }
 
+  const preservedRange = range.cloneRange();
+  const selectionRoot = range.commonAncestorContainer.nodeType === Node.TEXT_NODE
+    ? range.commonAncestorContainer.parentNode
+    : range.commonAncestorContainer;
+  const intersectingBlocks = getIntersectingEditorBlocks(range);
+
+  if (selectionRoot === trainingLessonEditor || intersectingBlocks.length > 1) {
+    intersectingBlocks.forEach((block) => {
+      applyStylesToElementTree(block, styles);
+    });
+    restoreSpecificEditorRange(preservedRange);
+    return;
+  }
+
   const span = document.createElement("span");
   Object.assign(span.style, styles);
   const fragment = range.extractContents();
@@ -2836,6 +3681,21 @@ function applyInlineStyle(styles) {
 function applyBlockStyle(styles) {
   const range = getEditorRange();
   if (!range) {
+    return;
+  }
+
+  const preservedRange = range.cloneRange();
+  const selectionRoot = range.commonAncestorContainer.nodeType === Node.TEXT_NODE
+    ? range.commonAncestorContainer.parentNode
+    : range.commonAncestorContainer;
+  const intersectingBlocks = getIntersectingEditorBlocks(range).filter((block) =>
+    block instanceof HTMLElement && block.tagName !== "PRE" && !block.classList.contains("lesson-code-block"));
+
+  if (selectionRoot === trainingLessonEditor || intersectingBlocks.length > 1) {
+    intersectingBlocks.forEach((block) => {
+      Object.assign(block.style, styles);
+    });
+    restoreSpecificEditorRange(preservedRange);
     return;
   }
 
@@ -2891,20 +3751,11 @@ function addTrainingUnit() {
     return;
   }
 
-  const title = window.prompt("Unit title");
-  if (!title || !title.trim()) {
-    return;
-  }
-
-  const items = getCourseItems();
-  items.push({
-    id: `unit-${Date.now()}`,
+  openTrainingMenuEditor({
+    mode: "create-unit",
     kind: "divider",
-    title: title.trim(),
-    customTitle: true,
+    label: "New unit",
   });
-  persistCourseContent();
-  renderTraining();
 }
 
 function addTrainingLesson() {
@@ -2912,25 +3763,11 @@ function addTrainingLesson() {
     return;
   }
 
-  const title = window.prompt("Lesson title");
-  if (!title || !title.trim()) {
-    return;
-  }
-
-  const section = window.prompt("Section name", getCurrentSectionName());
-  const items = getCourseItems();
-  items.push({
-    id: `lesson-${Date.now()}`,
+  openTrainingMenuEditor({
+    mode: "create-lesson",
     kind: "lesson",
-    title: title.trim(),
-    section: (section || "").trim(),
-    content: [],
-    html: "",
-    customTitle: true,
-    customSection: true,
+    label: "New lesson",
   });
-  persistCourseContent();
-  renderTraining();
 }
 
 function addLessonNear(itemId, kind) {
@@ -2938,30 +3775,13 @@ function addLessonNear(itemId, kind) {
     return;
   }
 
-  const title = window.prompt("Lesson title");
-  if (!title || !title.trim()) {
-    return;
-  }
-
-  const items = getCourseItems();
-  const insertIndex = getInsertIndexForLesson(items, itemId, kind);
-  const section = getSectionForInsert(items, itemId, kind);
-  const lessonId = `lesson-${Date.now()}`;
-
-  items.splice(insertIndex, 0, {
-    id: lessonId,
+  openTrainingMenuEditor({
+    mode: "insert-lesson",
     kind: "lesson",
-    title: title.trim(),
-    section,
-    content: [],
-    html: "",
-    customTitle: true,
-    customSection: true,
+    anchorId: itemId,
+    anchorKind: kind,
+    label: "Insert lesson",
   });
-
-  trainingState.selectedLessonId = lessonId;
-  persistCourseContent();
-  renderTraining();
 }
 
 function getInsertIndexForLesson(items, itemId, kind) {
@@ -3128,10 +3948,15 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/"/g, "&quot;");
+}
+
 consoleInput.value = consoleDefaultCode;
 htmlInput.value = builderDefaultHtml;
 cssInput.value = builderDefaultCss;
 hydrateCourseContent();
+hydrateTrainingUiState();
 
 updateCodeEditor(consoleInput, consoleHighlight, consoleLineNumbers, highlightJavaScript);
 updateCodeEditor(htmlInput, htmlHighlight, htmlLineNumbers, highlightHtml);
@@ -3141,3 +3966,6 @@ runConsoleCode();
 renderPreview();
 renderTraining();
 applyLanguage("en");
+updateColorToolSwatches();
+
+
